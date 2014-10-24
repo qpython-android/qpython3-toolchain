@@ -1,0 +1,1 @@
+./Configure no-dso no-krb5 linux-armv4 --prefix=/home/river/android-sdk/workplace/micharu123-py4a/python3-alpha/thirdparty --openssldir=/home/river/android-sdk/workplace/micharu123-py4a/python3-alpha/openssl

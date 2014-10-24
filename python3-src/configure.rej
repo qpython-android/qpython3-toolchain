@@ -1,0 +1,20 @@
+--- configure	2011-09-04 02:16:50.000000000 +1000
++++ configure	2011-10-30 19:19:13.852835272 +1000
+@@ -12160,7 +12160,7 @@
+ if ${ac_cv_broken_sem_getvalue+:} false; then :
+   $as_echo_n "(cached) " >&6
+ else
+-  if test "$cross_compiling" = yes; then :
++  if test "$cross_compiling" = no; then :
+   ac_cv_broken_sem_getvalue=yes
+ else
+   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+@@ -13625,7 +13625,7 @@
+   $as_echo_n "(cached) " >&6
+ else
+   if test "$cross_compiling" = yes; then :
+-  ac_cv_have_long_long_format=no
++  ac_cv_have_long_long_format="yes"
+ else
+   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+ /* end confdefs.h.  */
