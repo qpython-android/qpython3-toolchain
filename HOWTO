@@ -1,0 +1,108 @@
+
+###############################################################################
+
+Setup Configuration
+
+###############################################################################
+
+We should first mention that you are required to have the following installed:
+
+1) Android SDK. 
+   # Download the SDK, and add tools/platform-tools to your PATH.
+   export OS="linux" # Or "macosx", etc.
+   PATH=$PATH:/path/to/android-sdk-${OS}/tools
+   PATH=$PATH:/path/to/android-sdk-${OS}/platform-tools
+ 
+2) Android NDK
+   # Download the SDK, and create the standalone toolchain.  After which, put
+   # the bin directory on your PATH.
+   export VER="r8b" # This is the latest as of writing.
+   export ANDROID_NDK=/path/to/android-ndk-${VER}/
+   export ANDROID_NDK_TOOLCHAIN_ROOT=/path/to/android-toolchain # Doesn't exist
+                                                                # yet.
+   $ANDROID_NDK/build/tools/make-standalone-toolchain.sh --platform=android-9 \
+   --install-dir=$ANDROID_NDK_TOOLCHAIN_ROOT --toolchain=arm-linux-androideabi-4.4.3
+
+   export PATH=$PATH:$ANDROID_NDK_TOOLCHAIN_ROOT/bin
+
+3) Ubuntu 10+  
+    # If you are building on arch i686, read the below:
+    # http://stackoverflow.com/questions/9055005/cannot-find-ltinfo-when-compiling-android-4-0-3
+
+
+###############################################################################
+
+PY4A: Python2.6
+
+###############################################################################
+
+In order to build Py4A you first need to build the Python for Android platform.
+
+1) To ensure that you have all the dependencies required for building python2.6,
+   you can use a package manager (e.g., sudo apt-get build-dep python2.6), or
+   build python2.6 yourself (e.g., OS X users could build from scratch using
+   Mac Ports).
+
+2) To begin the scripted build process, execute the following.  Note that this
+   build scirpt will start the cross compilation of the Python VM for Android.
+   It grabs the scripted python version then creates the host python and
+   Parser/pgen required binaries (host architecture).
+   pushd python-build
+   bash build.sh
+   popd
+
+3) Next, executing the below will use the update-apk script to automate the
+   placement of all required hsared objects into the APK and generate XML
+   accordingly (i.e., updating references). This is required per build.
+   pushd python-build
+   python update-apk.py
+   popd
+
+4) Almost complete. The following steps requiring execution will build the
+   select set of Android libraries needed for PY4A to finish the build.
+   
+   pushd android
+   pushd Utils
+   ant
+   popd
+   pushd Common
+   ant
+   popd
+   pushd InterpreterForAndroid
+   ant
+   popd
+   popd
+
+5) Finally, we should be able to build the PY4A APK signature with
+   the debug key.
+   
+   pushd android/PythonForAndroid
+   mkdir libs
+   cp ../{Utils,Common,InterpreterForAndroid}/dist/*.jar libs
+   ant debug
+   popd
+
+
+
+###############################################################################
+
+PY4A: Python3.2
+
+###############################################################################
+
+In order to build Py4A you first need to build the Python3 for Android platform.
+Please note that these steps are not the same as the above!
+
+1) Follow the directions under setup configuration above.
+
+2) Change to the python3-alpha directory.
+
+3) Do a clean build of all source.  This can be executed with the following:
+   bash cleanall.sh # This is useful because it will run the configure scripts,
+                    # populating the *.in files.
+   bash buildall.sh
+
+4) Verify the zip files have been created in python3-alpha/python3-src/:
+   * pyhon3_extras_${ver}.zip # Version is dynamic, see root directory VERSIONS.
+   * python3_${ver}.zip
+   * python3_scripts_${ver}.zip
