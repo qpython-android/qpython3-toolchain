@@ -1,7 +1,9 @@
+set -e
+
+TARGET=${TARGET:-"arm-linux-androideabi"}
 pushd ../thirdparty
 export THIRD_PARTY_DIR=`pwd`
 popd
-export TARGET=arm-linux-androideabi
 
 CC=${TARGET}-gcc CXX=${TARGET}-g++ AR=${TARGET}-ar RANLIB=${TARGET}-ranlib ./configure --host=${TARGET} --build=x86_64-linux-gnu --prefix=/python --enable-shared
 

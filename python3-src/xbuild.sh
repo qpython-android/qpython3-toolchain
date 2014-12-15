@@ -1,3 +1,6 @@
+set -e
+
+TARGET=${TARGET:-"arm-linux-androideabi"}
 pushd ../thirdparty
 export THIRD_PARTY_DIR=`pwd`
 popd
@@ -17,6 +20,6 @@ cat pyconfig.h \
 mv temp pyconfig.h
 
 
-make HOSTPYTHON=./hostpython HOSTPGEN=./Parser/hostpgen BLDSHARED="arm-linux-androideabi-gcc -shared" CROSS_COMPILE=arm-linux-androideabi- CROSS_COMPILE_TARGET=yes HOSTARCH=arm-linux-androideabi BUILDARCH=x86_64-linux-gnu && \
-make install HOSTPYTHON=./hostpython BLDSHARED="arm-linux-androideabi-gcc -shared" CROSS_COMPILE=arm-linux-androideabi- CROSS_COMPILE_TARGET=yes prefix=${PWD}/_install/python3 &&\
+make HOSTPYTHON=./hostpython HOSTPGEN=./Parser/hostpgen BLDSHARED="${TARGET}-gcc -shared" CROSS_COMPILE=${TARGET}- CROSS_COMPILE_TARGET=yes HOSTARCH=${TARGET} BUILDARCH=x86_64-linux-gnu && \
+make install HOSTPYTHON=./hostpython BLDSHARED="${TARGET}-gcc -shared" CROSS_COMPILE=${TARGET}- CROSS_COMPILE_TARGET=yes prefix=${PWD}/_install/python3 &&\
 ./xpack.sh
