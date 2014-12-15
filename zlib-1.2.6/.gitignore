@@ -1,0 +1,12 @@
+/example
+/example64
+/examplesh
+/libz.so.*
+/minigzip
+/minigzip64
+/minigzipsh
+
+*.a
+*.lo
+*.o
+*.so

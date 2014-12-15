@@ -1,0 +1,10 @@
+*.o
+*.so
+Makefile
+
+/config.log
+/config.status
+/libhistory.a
+/libreadline.a
+/shlib/libhistory.so.*
+/shlib/libreadline.so.*

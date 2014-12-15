@@ -1,0 +1,16 @@
+*.o
+*.lo
+*.la
+*.tmp
+Makefile
+
+/.libs
+/config.h
+/config.log
+/config.m4
+/config.status
+/gen-fib
+/gmp-mparam.h
+/gmp.h
+/libtool
+/doc/gmp.info*
