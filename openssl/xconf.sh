@@ -1,1 +1,16 @@
-./Configure no-dso no-krb5 linux-armv4 --prefix=/home/river/android-sdk/workplace/micharu123-py4a/python3-alpha/thirdparty --openssldir=/home/river/android-sdk/workplace/micharu123-py4a/python3-alpha/openssl
+case "$TARGET" in
+    "")
+        echo "TARGET is not set" >&2
+        exit 5
+        ;;
+    i686-*)
+        OS="linux-generic32";;
+    arm-*)
+        OS="linux-armv4";;
+    *)
+        echo "Unknown target: '$TARGET'" >&2
+        exit 5
+        ;;
+esac
+
+./Configure no-dso no-krb5 $OS --prefix=../thirdparty --openssldir=../openssl

@@ -1,0 +1,6 @@
+*.o
+
+/Makefile
+/Makefile.bak
+/crypto/opensslconf.h
+/tools/c_rehash

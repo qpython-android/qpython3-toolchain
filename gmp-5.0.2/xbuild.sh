@@ -1,4 +1,6 @@
-TARGET=arm-linux-androideabi
+set -e
+
+TARGET=${TARGET:-"arm-linux-androideabi"}
 pushd ../thirdparty
 TARGET_DIR=`pwd`
 popd
@@ -10,5 +12,6 @@ export RANLIB=${TARGET}-ranlib
 export LD=${TARGET}-ld
 export NM=${TARGET}-nm
 
+# XXX makeinfo must be installed to create doc/  : apt-get install texinfo
 ./configure --host=$TARGET --target=$TARGET --prefix=$TARGET_DIR --enable-shared && make && make install
 

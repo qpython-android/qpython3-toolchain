@@ -1,4 +1,6 @@
-export TARGET=arm-linux-androideabi
+set -e
+
+TARGET=${TARGET:-"arm-linux-androideabi"}
 pushd ../thirdparty
 export TARGET_DIR=`pwd`
 popd

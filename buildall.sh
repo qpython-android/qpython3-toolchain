@@ -1,6 +1,10 @@
 #!/bin/bash
 echo "Building all Py34a"
 
+set -e
+
+export TARGET="i686-linux-android"
+
 arch=`uname -m`
 if [ "$arch" == "i686" ]
 then

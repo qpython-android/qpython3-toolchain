@@ -1,0 +1,14 @@
+/.deps/shell.Po
+/.deps/sqlite3.Plo
+/.libs/
+/config.log
+/config.status
+/libtool
+/sqlite3
+/sqlite3.pc
+
+*.la
+*.lo
+*.o
+
+Makefile
