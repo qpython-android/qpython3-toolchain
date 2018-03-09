@@ -1,0 +1,24 @@
+From 6641119afb7a979e8fb02781531206f5d520add3 Mon Sep 17 00:00:00 2001
+From: River <riverfor@gmail.com>
+Date: Thu, 8 Mar 2018 18:03:31 +0800
+Subject: [PATCH] Up configure
+
+---
+ configure.ac | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/configure.ac b/configure.ac
+index 2eb511bf7f..d94f876c1b 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -919,6 +919,7 @@ if $CPP $CPPFLAGS conftest.c >conftest.out 2>/dev/null; then
+   _arm_arch=`sed -n -e '/__ARM_ARCH/d' -e 's/^arm_arch = //p' conftest.out`
+   AC_MSG_RESULT([$ANDROID_API_LEVEL])
+   AC_DEFINE_UNQUOTED(ANDROID_API_LEVEL, $ANDROID_API_LEVEL, [The Android API level.])
++  AC_DEFINE_UNQUOTED(__ANDROID__, 1, [The Android flag.])
+ 
+   AC_MSG_CHECKING([for the Android arm ABI])
+   AC_MSG_RESULT([$_arm_arch])
+-- 
+2.11.0 (Apple Git-81)
+

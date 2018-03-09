@@ -1,3 +1,4 @@
-/config.log
-/.deps
-/thirdparty
+/build
+/src/*
+!/src/.keep
+*.pyc

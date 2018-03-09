@@ -1,0 +1,25 @@
+From 77b9be6092310679666b02863d0decb9069cb3c4 Mon Sep 17 00:00:00 2001
+From: River <riverfor@gmail.com>
+Date: Thu, 8 Mar 2018 18:27:33 +0800
+Subject: [PATCH] pyport-undef-HAVE_LANGINFO_H
+
+---
+ Include/pyport.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/Include/pyport.h b/Include/pyport.h
+index 426822a81f..936d5102c1 100644
+--- a/Include/pyport.h
++++ b/Include/pyport.h
+@@ -762,6 +762,8 @@ extern _invalid_parameter_handler _Py_silent_invalid_parameter_handler;
+ 
+ #ifdef __ANDROID__
+ #include <android/api-level.h>
++#undef HAVE_LANGINFO_H
++#undef CODESET
+ #endif
+ 
+ #endif /* Py_PYPORT_H */
+-- 
+2.11.0 (Apple Git-81)
+
