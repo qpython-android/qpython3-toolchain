@@ -57,7 +57,7 @@ Please file a issue [to the issue list](https://github.com/qpython-android/qpyth
 
 Others
 ---------------
-Folk from [Python3-Android](https://github.com/rave-engine/python3-android)
+Folked from [Python3-Android](https://github.com/rave-engine/python3-android)
 
-Thanks the author : [Shizmob](https://github.com/Shizmob)
+Thanks the author and contributor: [Shizmob](https://github.com/Shizmob),(Chih-Hsuan Yen)[https://github.com/yan12125]
 
