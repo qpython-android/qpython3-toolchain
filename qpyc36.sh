@@ -42,7 +42,8 @@ find ${PYSRC} -name __pycache__ -exec rm -fr {} \;
 # Copy resources
 cp ${PYSRC}/usr/bin/python3.6m $DST/bin/python3-android5
 cp $ASSRC/bin/* $DST/bin
-cp ${PYSRC}/usr/lib/python3.6/config-3.6m/Makefile $DST/lib/python3.6/config-3.6m
+touch $DST/lib/python3.6/config-3.6m/Makefile
+touch $DST/include/python3.6m/pyconfig.h
 cp ${PYSRC}/usr/lib/python3.6/lib-dynload/* $DST/lib/python3.6/lib-dynload
 cd ${PYSRC}/usr/lib/python3.6 &&  zip -r $DST/lib/python36.zip * --exclude lib-dynload
 
