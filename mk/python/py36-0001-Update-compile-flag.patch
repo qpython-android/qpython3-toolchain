@@ -1,0 +1,38 @@
+From 01eb9e03dc52343bf4f1c51272b34003d5a3727c Mon Sep 17 00:00:00 2001
+From: River <riverfor@gmail.com>
+Date: Mon, 12 Mar 2018 12:01:10 +0800
+Subject: [PATCH] Update build info
+
+---
+ Modules/getbuildinfo.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/Modules/getbuildinfo.c b/Modules/getbuildinfo.c
+index 5f941a26e1..b12420cf59 100644
+--- a/Modules/getbuildinfo.c
++++ b/Modules/getbuildinfo.c
+@@ -23,12 +23,21 @@
+ /* XXX Only unix build process has been tested */
+ #ifndef GITVERSION
+ #define GITVERSION ""
++#else
++#undef GITVERSION
++#define GITVERSION "3.6.4"
+ #endif
+ #ifndef GITTAG
+ #define GITTAG ""
++#else
++#undef GITTAG
++#define GITTAG "qpyc"
+ #endif
+ #ifndef GITBRANCH
+ #define GITBRANCH ""
++#else
++#undef GITBRANCH
++#define GITBRANCH "qpyc"
+ #endif
+ 
+ const char *
+-- 
+2.11.0 (Apple Git-81)
+

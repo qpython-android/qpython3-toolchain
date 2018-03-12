@@ -14,6 +14,8 @@ class Python(Package):
         LocalPatch('skip-build'),
         LocalPatch('py36-0001-Up-configure'),
         LocalPatch('py36-pyport-undef-HAVE_LANGINFO_H'),
+        LocalPatch('py36-0001-Update-compile-flag'),
+        LocalPatch('py36-0001-Remove-readline'),
         RemotePatch('https://github.com/python/cpython/pull/139.patch'),
     ]
 

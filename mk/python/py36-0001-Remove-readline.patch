@@ -1,0 +1,25 @@
+From 847449c590e97010e73a2e06ac731bbb276fa9ab Mon Sep 17 00:00:00 2001
+From: River <riverfor@gmail.com>
+Date: Mon, 12 Mar 2018 10:39:48 +0800
+Subject: [PATCH] Remove readline
+
+---
+ setup.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/setup.py b/setup.py
+index 0d644db857..9920b5514f 100644
+--- a/setup.py
++++ b/setup.py
+@@ -741,7 +741,7 @@ class PyBuildExt(build_ext):
+                                libraries=math_libs) )
+ 
+         # readline
+-        do_readline = self.compiler.find_library_file(lib_dirs, 'readline')
++        do_readline = False #self.compiler.find_library_file(lib_dirs, 'readline')
+         readline_termcap_library = ""
+         curses_library = ""
+         # Cannot use os.popen here in py3k.
+-- 
+2.11.0 (Apple Git-81)
+
