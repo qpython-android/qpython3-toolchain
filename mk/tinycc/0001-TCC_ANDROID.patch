@@ -1,0 +1,56 @@
+From 1ac5da7fa000d322ca227e31bd90647451504ba1 Mon Sep 17 00:00:00 2001
+From: River <riverfor@gmail.com>
+Date: Wed, 28 Mar 2018 22:15:42 +0800
+Subject: [PATCH] USE .SO
+
+---
+ configure | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/configure b/configure
+index 1ee3acb..75e2d1b 100755
+--- a/configure
++++ b/configure
+@@ -51,10 +51,10 @@ gcc_minor=0
+ # OS specific
+ targetos=`uname`
+ case $targetos in
+-  Darwin)
+-    confvars="$confvars OSX"
+-    DLLSUF=".dylib"
+-    ;;
++  #Darwin)
++  #  confvars="$confvars OSX"
++  #  DLLSUF=".dylib"
++  #  ;;
+   MINGW*|MSYS*|CYGWIN*)
+     mingw32=yes
+     ;;
+diff --git a/tcc.h b/tcc.h
+index da26298..fbf46b5 100644
+--- a/tcc.h
++++ b/tcc.h
+@@ -22,6 +22,7 @@
+ #define _TCC_H
+ 
+ #define _GNU_SOURCE
++#define __ANDROID_API__ 21
+ #include "config.h"
+ 
+ #include <stdlib.h>
+diff --git a/tcc.h b/tcc.h
+index da26298..a8c9377 100644
+--- a/tcc.h
++++ b/tcc.h
+@@ -176,7 +176,7 @@ extern long double strtold (const char *__nptr, char **__endptr);
+ # define CONFIG_SYSROOT ""
+ #endif
+ #ifndef CONFIG_TCCDIR
+-# define CONFIG_TCCDIR "/usr/local/lib/tcc"
++# define CONFIG_TCCDIR "/system/lib"
+ #endif
+ #ifndef CONFIG_LDDIR
+ # define CONFIG_LDDIR "lib"
+-- 
+2.11.0 (Apple Git-81)
+

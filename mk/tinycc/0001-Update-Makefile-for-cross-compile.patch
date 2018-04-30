@@ -1,0 +1,48 @@
+From 2ab5d487de9160fd58ba77c6a85d6d85c0ea3de8 Mon Sep 17 00:00:00 2001
+From: River <riverfor@gmail.com>
+Date: Fri, 30 Mar 2018 18:45:03 +0800
+Subject: [PATCH] Up
+
+---
+ Makefile     | 2 +-
+ lib/Makefile | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 8888149..4bc6abf 100644
+--- a/Makefile
++++ b/Makefile
+@@ -46,7 +46,7 @@ else
+  NATIVE_TARGET = $(ARCH)
+  ifdef CONFIG_OSX
+   NATIVE_TARGET = $(ARCH)-osx
+-  LDFLAGS += -flat_namespace -undefined warning
++  LDFLAGS += -undefined
+   export MACOSX_DEPLOYMENT_TARGET := 10.2
+  endif
+ endif
+diff --git a/lib/Makefile b/lib/Makefile
+index 0c1ec54..13e4087 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -9,7 +9,7 @@ T = $(or $(CROSS_TARGET),$(NATIVE_TARGET),unknown)
+ X = $(if $(CROSS_TARGET),$(CROSS_TARGET)-)
+ BIN = $(TOP)/$(X)libtcc1.a
+ 
+-XTCC ?= $(TOP)/$(X)tcc$(EXESUF)
++XTCC ?= $(CC) $(CFLAGS_P) $(LIBS_P) $(LDFLAGS_P) #$(TOP)/$(X)tcc$(EXESUF)
+ XCC = $(XTCC)
+ XAR = $(XTCC) -ar
+ XFLAGS-unx = -B$(TOPSRC)
+@@ -58,7 +58,7 @@ OBJ-arm-eabihf = $(ARM_O)
+ OBJ-arm-wince = $(ARM_O) $(WIN_O)
+ 
+ $(BIN) : $(patsubst %.o,$(X)%.o,$(OBJ-$T))
+-	$(XAR) rcs $@ $^
++	$(AR) rcs $@ $^
+ 
+ $(X)%.o : %.c
+ 	$(XCC) -c $< -o $@ $(XFLAGS)
+-- 
+2.11.0 (Apple Git-81)
+

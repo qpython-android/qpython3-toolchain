@@ -22,6 +22,8 @@ class Package:
     patches: List[Patch] = []
     dependencies = []
     skip_uploading: bool = False
+    re_configure: bool = False
+    use_gcc: bool = False
 
     def __init__(self):
         self.name = type(self).__name__.lower()
@@ -79,7 +81,7 @@ class Package:
         UNIFIED_SYSROOT = ANDROID_NDK / 'sysroot' / 'usr'
 
         cflags = ['-fPIC']
-        if isinstance(target_arch(), arm):
+        if isinstance(target_arch(), arm) and not self.use_gcc: #use_gcc instead of clang
             cflags += ['-fno-integrated-as']
 
         self.env.update({
@@ -123,6 +125,9 @@ class Package:
         return BASE / 'mk' / self.name
 
     def fresh(self) -> bool:
+        if self.re_configure:
+            return True
+
         if not self.source:
             return
         return not (self.source.source_dir / 'Makefile').exists()

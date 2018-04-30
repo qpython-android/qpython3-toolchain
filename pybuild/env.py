@@ -14,7 +14,7 @@ android_api_level = 21
 #  zlib - enable the zlib module
 #  expat - enable the pyexpat module
 #  tools - some handy utility scripts from ./devscripts
-packages = ('openssl', 'ncurses', 'readline', 'sqlite', 'bzip2', 'xz', 'gdbm', 'libffi', 'zlib', 'expat', 'tools')
+packages = ('tinycc', 'openssl', 'ncurses', 'readline', 'sqlite', 'bzip2', 'xz', 'gdbm', 'libffi', 'zlib', 'expat', 'tools', )
 
 use_bintray = False
 bintray_username = 'yan12125'
