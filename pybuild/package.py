@@ -68,7 +68,7 @@ class Package:
                             target_arch().ANDROID_TOOLCHAIN /
                             'prebuilt' / f'{HOST_OS}-x86_64')
         CLANG_PREFIX = (ANDROID_NDK / 'toolchains' /
-                        'llvm' / 'prebuilt' / f'{HOST_OS}-x86_64')
+                        'llvm-3.7' / 'prebuilt' / f'{HOST_OS}-x86_64')
 
         LLVM_BASE_FLAGS = [
             '-target', target_arch().LLVM_TARGET,
@@ -78,7 +78,10 @@ class Package:
         ARCH_SYSROOT = (ANDROID_NDK / 'platforms' /
                         f'android-{env.android_api_level}' /
                         f'arch-{self.arch}' / 'usr')
-        UNIFIED_SYSROOT = ANDROID_NDK / 'sysroot' / 'usr'
+        UNIFIED_SYSROOT = (ANDROID_NDK / 'platforms' /
+                        f'android-{env.android_api_level}' /
+                        f'arch-{self.arch}' )
+        CRYSTAX_SYSROOT = ANDROID_NDK / 'sources' / 'crystax'
 
         cflags = ['-fPIC']
         if isinstance(target_arch(), arm) and not self.use_gcc: #use_gcc instead of clang
@@ -90,6 +93,7 @@ class Package:
             # Sysroots
             'ARCH_SYSROOT': ARCH_SYSROOT,
             'UNIFIED_SYSROOT': UNIFIED_SYSROOT,
+            'CRYSTAX_SYSROOT': CRYSTAX_SYSROOT,
 
             # Compilers
             'CC': f'{CLANG_PREFIX}/bin/clang',
@@ -108,6 +112,7 @@ class Package:
             'CXXFLAGS': cflags,
             'LDFLAGS': LLVM_BASE_FLAGS + [
                 '--sysroot=' + str(ARCH_SYSROOT),
+                f'-L{CRYSTAX_SYSROOT}/libs/{env.crystax_target_arch}',
                 '-pie',
             ],
         })
@@ -144,8 +149,8 @@ class Package:
             raise Exception('Requires environment variable $ANDROID_NDK')
         ndk = pathlib.Path(ndk_path)
 
-        if not (ndk / 'sysroot').exists():
-            raise Exception('Requires Android NDK r14 beta1 or above')
+        #if not (ndk / 'sysroot').exists():
+        #    raise Exception('Requires Android NDK r14 beta1 or above')
 
         return ndk
 

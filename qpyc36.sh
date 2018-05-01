@@ -40,6 +40,7 @@ done
 find ${PYSRC} -name __pycache__ -exec rm -fr {} \;
 
 # Copy resources
+cp ${ANDROID_NDK}/sources/crystax/libs/armeabi-v7a/libcrystax.so $DST/lib
 cp ${PYSRC}/usr/bin/python3.6m $DST/bin/python3-android5
 cp $ASSRC/bin/* $DST/bin
 touch $DST/lib/python3.6/config-3.6m/Makefile

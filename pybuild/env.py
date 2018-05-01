@@ -1,5 +1,6 @@
 target_arch = 'arm'
 android_api_level = 21
+crystax_target_arch='armeabi-v7a'
 
 # Python optional modules.
 # Available:
@@ -14,7 +15,8 @@ android_api_level = 21
 #  zlib - enable the zlib module
 #  expat - enable the pyexpat module
 #  tools - some handy utility scripts from ./devscripts
-packages = ('tinycc', 'openssl', 'ncurses', 'readline', 'sqlite', 'bzip2', 'xz', 'gdbm', 'libffi', 'zlib', 'expat', 'tools', )
+#packages = ('tinycc', 'openssl', 'ncurses', 'readline', 'sqlite', 'bzip2', 'xz', 'gdbm', 'libffi', 'zlib', 'expat', 'tools', )
+packages = ( 'openssl', 'ncurses', 'readline', 'sqlite', 'bzip2', 'gdbm', 'libffi', 'zlib', 'expat', 'tools', )
 
 use_bintray = False
 bintray_username = 'yan12125'
