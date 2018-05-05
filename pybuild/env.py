@@ -1,6 +1,8 @@
+import os
+
 target_arch = 'arm'
 android_api_level = 21
-crystax_target_arch='armeabi-v7a'
+crystax_target_arch=os.getenv('CRYSTAX_TARGET_ARCH')
 
 # Python optional modules.
 # Available:
@@ -16,8 +18,11 @@ crystax_target_arch='armeabi-v7a'
 #  expat - enable the pyexpat module
 #  tools - some handy utility scripts from ./devscripts
 #packages = ('tinycc', 'openssl', 'ncurses', 'readline', 'sqlite', 'bzip2', 'xz', 'gdbm', 'libffi', 'zlib', 'expat', 'tools', )
-packages = ( 'openssl', 'ncurses', 'readline', 'sqlite', 'bzip2', 'gdbm', 'libffi', 'zlib', 'expat', 'tools', )
+packages = ('openblas', 'openssl', 'ncurses', 'readline', 'sqlite', 'bzip2', 'gdbm', 'libffi', 'zlib', 'expat', 'tools')
+py_packages = ('numpy',)
+
+rebuild_py  = False
 
 use_bintray = False
-bintray_username = 'yan12125'
-bintray_repo = 'cpython-bin-deps-android'
+bintray_username = 'qpython-android'
+bintray_repo = 'qpython3-core'

@@ -56,6 +56,8 @@ class Package:
 
     def init_build_env(self):
         self.env = {}
+        self.env['CLANG_FLAGS_OPENBLAS']=os.getenv('CLANG_FLAGS_OPENBLAS')
+        self.env['AR_OPENBLAS']=os.getenv('AR_OPENBLAS')
 
         ANDROID_NDK = self._check_ndk()
 
@@ -91,9 +93,13 @@ class Package:
             'ANDROID_API_LEVEL': env.android_api_level,
 
             # Sysroots
+            'ANDROID_NDK': ANDROID_NDK,
             'ARCH_SYSROOT': ARCH_SYSROOT,
             'UNIFIED_SYSROOT': UNIFIED_SYSROOT,
             'CRYSTAX_SYSROOT': CRYSTAX_SYSROOT,
+
+            # flag
+            'crystax_target_arch':env.crystax_target_arch,
 
             # Compilers
             'CC': f'{CLANG_PREFIX}/bin/clang',
@@ -115,6 +121,9 @@ class Package:
                 f'-L{CRYSTAX_SYSROOT}/libs/{env.crystax_target_arch}',
                 '-pie',
             ],
+            #'LD': str(ANDROID_NDK)+'/toolchains/arm-linux-androideabi-4.9/prebuilt/'+HOST_OS+'-x86_64/bin/arm-linux-androideabi-ld',
+            #'AR': self.env['AR_OPENBLAS'],
+
         })
 
         for dep in self.dependencies:

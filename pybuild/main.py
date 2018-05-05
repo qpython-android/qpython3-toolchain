@@ -2,7 +2,7 @@ import os
 import re
 from typing import Iterable
 
-from .env import use_bintray
+from .env import use_bintray, rebuild_py, py_packages
 from .package import enumerate_packages, import_package
 
 built_packags: set = set()
@@ -62,4 +62,8 @@ def main():
     # TODO: Make this configurable
     need_rebuild.update(parse_packages(':COMMIT_MARKER'))
     print(f'Packages to rebuild: {need_rebuild}')
-    build_package('python')
+    if rebuild_py:
+        build_package('python')
+
+    for item in py_packages:
+        build_package(item)
