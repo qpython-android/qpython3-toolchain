@@ -1,14 +1,15 @@
-From 192bd495903a5df3e937d939b3203d76a0a34e9b Mon Sep 17 00:00:00 2001
+From b71d4135f9e161af3402102ebd604121ed4367b6 Mon Sep 17 00:00:00 2001
 From: River <riverfor@gmail.com>
-Date: Fri, 4 May 2018 09:45:05 +0800
-Subject: [PATCH] cross-compile
+Date: Sat, 5 May 2018 21:16:47 +0800
+Subject: [PATCH] Cross compile
 
 ---
  .gitignore                          |   1 -
  numpy/core/src/private/npy_fpmath.h |   2 +
- numpy/distutils/unixccompiler.py    |   2 +
+ numpy/distutils/system_info.py      |  10 +-
+ numpy/distutils/unixccompiler.py    |   4 +
  site.cfg                            | 215 ++++++++++++++++++++++++++++++++++++
- 4 files changed, 219 insertions(+), 1 deletion(-)
+ 5 files changed, 229 insertions(+), 3 deletions(-)
  create mode 100644 site.cfg
 
 diff --git a/.gitignore b/.gitignore
@@ -36,11 +37,61 @@ index 86b9cf3da..ce1605801 100644
  #ifdef NPY_OS_DARWIN
      /* This hardcoded logic is fragile, but universal builds makes it
       * difficult to detect arch-specific features */
+diff --git a/numpy/distutils/system_info.py b/numpy/distutils/system_info.py
+index 93a8e6f75..decf4d0c0 100644
+--- a/numpy/distutils/system_info.py
++++ b/numpy/distutils/system_info.py
+@@ -698,9 +698,11 @@ class system_info(object):
+                 continue
+ 
+             if d not in ret:
+-                ret.append(d)
++                # Hack for QPython cross compile
++                if not d.lower().startswith("/us"):
++                    ret.append(d)
+ 
+-        log.debug('( %s = %s )', key, ':'.join(ret))
++        log.error('( %s = %s )', key, ':'.join(ret))
+         return ret
+ 
+     def get_lib_dirs(self, key='library_dirs'):
+@@ -1554,6 +1556,7 @@ class lapack_opt_info(system_info):
+             # Use the system lapack from Accelerate or vecLib under OSX
+             args = []
+             link_args = []
++            """
+             if get_platform()[-4:] == 'i386' or 'intel' in get_platform() or \
+                'x86_64' in get_platform() or \
+                'i386' in platform.platform():
+@@ -1574,6 +1577,7 @@ class lapack_opt_info(system_info):
+                 else:
+                     args.extend(['-faltivec'])
+                 link_args.extend(['-Wl,-framework', '-Wl,vecLib'])
++            """
+             if args:
+                 self.set_info(extra_compile_args=args,
+                               extra_link_args=link_args,
+@@ -1660,6 +1664,7 @@ class blas_opt_info(system_info):
+             # Use the system BLAS from Accelerate or vecLib under OSX
+             args = []
+             link_args = []
++            """
+             if get_platform()[-4:] == 'i386' or 'intel' in get_platform() or \
+                'x86_64' in get_platform() or \
+                'i386' in platform.platform():
+@@ -1684,6 +1689,7 @@ class blas_opt_info(system_info):
+                 args.extend([
+                     '-I/System/Library/Frameworks/vecLib.framework/Headers'])
+                 link_args.extend(['-Wl,-framework', '-Wl,vecLib'])
++            """
+             if args:
+                 self.set_info(extra_compile_args=args,
+                               extra_link_args=link_args,
 diff --git a/numpy/distutils/unixccompiler.py b/numpy/distutils/unixccompiler.py
-index 6ed5eec6f..0766612ca 100644
+index 6ed5eec6f..b1b6bc8ec 100644
 --- a/numpy/distutils/unixccompiler.py
 +++ b/numpy/distutils/unixccompiler.py
-@@ -107,6 +107,8 @@ def UnixCCompiler_create_static_lib(self, objects, output_libname,
+@@ -107,12 +107,15 @@ def UnixCCompiler_create_static_lib(self, objects, output_libname,
              pass
          self.mkpath(os.path.dirname(output_filename))
          tmp_objects = objects + self.objects
@@ -49,6 +100,21 @@ index 6ed5eec6f..0766612ca 100644
          while tmp_objects:
              objects = tmp_objects[:50]
              tmp_objects = tmp_objects[50:]
+             display = '%s: adding %d object files to %s' % (
+                            os.path.basename(self.archiver[0]),
+                            len(objects), output_filename)
++            log.error(self.archiver)
+             self.spawn(self.archiver + [output_filename] + objects,
+                        display = display)
+ 
+@@ -122,6 +125,7 @@ def UnixCCompiler_create_static_lib(self, objects, output_libname,
+         # needed -- or maybe Python's configure script took care of
+         # it for us, hence the check for leading colon.
+         if self.ranlib:
++            self.ranlib[0] = 'arm-linux-androideabi-ranlib'
+             display = '%s:@ %s' % (os.path.basename(self.ranlib[0]),
+                                    output_filename)
+             try:
 diff --git a/site.cfg b/site.cfg
 new file mode 100644
 index 000000000..88ed33ec6

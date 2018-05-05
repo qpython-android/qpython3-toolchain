@@ -18,10 +18,10 @@ crystax_target_arch=os.getenv('CRYSTAX_TARGET_ARCH')
 #  expat - enable the pyexpat module
 #  tools - some handy utility scripts from ./devscripts
 #packages = ('tinycc', 'openssl', 'ncurses', 'readline', 'sqlite', 'bzip2', 'xz', 'gdbm', 'libffi', 'zlib', 'expat', 'tools', )
-packages = ('openblas', 'openssl', 'ncurses', 'readline', 'sqlite', 'bzip2', 'gdbm', 'libffi', 'zlib', 'expat', 'tools')
-py_packages = ('numpy',)
+packages = ('openssl', 'ncurses', 'readline', 'sqlite', 'bzip2', 'gdbm', 'libffi', 'zlib', 'expat', 'tools')
+py_packages = ('openblas','numpy',)
 
-rebuild_py  = False
+rebuild_py  = True
 
 use_bintray = False
 bintray_username = 'qpython-android'

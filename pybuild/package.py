@@ -75,6 +75,7 @@ class Package:
         LLVM_BASE_FLAGS = [
             '-target', target_arch().LLVM_TARGET,
             '-gcc-toolchain', self.TOOL_PREFIX,
+            '-I'+str(CLANG_PREFIX) + '/lib/clang/3.7/include'
         ]
 
         ARCH_SYSROOT = (ANDROID_NDK / 'platforms' /
@@ -122,7 +123,6 @@ class Package:
                 '-pie',
             ],
             #'LD': str(ANDROID_NDK)+'/toolchains/arm-linux-androideabi-4.9/prebuilt/'+HOST_OS+'-x86_64/bin/arm-linux-androideabi-ld',
-            #'AR': self.env['AR_OPENBLAS'],
 
         })
 
