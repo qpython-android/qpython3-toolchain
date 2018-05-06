@@ -19,10 +19,10 @@ class TinyCC(Package):
             './configure',
             '--prefix=/data/data/org.qpython.qpy.community/files',
             f'--sysroot={self.env["ARCH_SYSROOT"]}',
-            f'--cc={self.TOOL_PREFIX}/bin/arm-linux-androideabi-gcc',
-            f'--ar={self.TOOL_PREFIX}/bin/arm-linux-androideabi-ar',
+            f'--cc={self.env["CC"]}',
+            f'--ar={self.env["AR"]}',
             f'--extra-cflags=-I{self.env["ARCH_SYSROOT"]}/include -D__ANDROID_API__=21 ',
-            f'--extra-ldflags=--sysroot {self.env["ARCH_SYSROOT"]} -L{self.env["UNIFIED_SYSROOT"]}/usr/lib -L{self.env["CRYSTAX_SYSROOT"]}/libs/armeabi-v7a -L. -D__ANDROID_API__=21 -fPIE -pie '
+            f'--extra-ldflags=--sysroot {self.env["ARCH_SYSROOT"]} -L{self.env["UNIFIED_SYSROOT"]}/lib -L{self.env["CRYSTAX_SYSROOT"]}/libs/armeabi-v7a -L. -D__ANDROID_API__=21 -fPIE -pie '
             '',
             '--cpu=armv7',
             '--disable-static',

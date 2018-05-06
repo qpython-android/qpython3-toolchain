@@ -17,8 +17,8 @@ class OpenBLAS(Package):
             'make',
             'TARGET=ARMV7',
             'ONLY_CBLAS=1',
-            f'AR={self.env["AR_OPENBLAS"]}',
-            f'CC=clang {self.env["CLANG_FLAGS_OPENBLAS"]}',
+            f'AR={self.env["AR"]}',
+            f'CC={self.env["CC"]} {self.env["CLANG_FLAGS_QPY"]}',
             'HOSTCC=gcc',
             'ARM_SOFTFP_ABI=1',
             ])

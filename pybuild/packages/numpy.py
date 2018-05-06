@@ -12,7 +12,7 @@ class NumPy(Package):
     use_gcc = True
 
     def prepare(self):
-        pass
+        self.run(['cp', self.filesdir / 'site.cfg', './'])
 
     def build(self):
         self.run([
@@ -21,5 +21,5 @@ class NumPy(Package):
             'build_ext',
             f'-I../../build/target/python/usr/include/python3.6m:../../build/target/openblas/usr/include',
             f'-L../../build/target/python/usr/lib:../../build/target/openblas/usr/lib',
-            f'-lpython36m',
+            f'-lpython3.6m',
         ])

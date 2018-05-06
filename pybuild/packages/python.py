@@ -12,10 +12,11 @@ class Python(Package):
         RemotePatch('https://bugs.python.org/file46517/gdbm.patch'),
         LocalPatch('cppflags'),
         LocalPatch('skip-build'),
-        LocalPatch('py36-0001-Up-configure'),
+        #LocalPatch('py36-0001-Up-configure'),
         LocalPatch('py36-pyport-undef-HAVE_LANGINFO_H'),
         LocalPatch('py36-0001-Update-compile-flag'),
         LocalPatch('py36-0001-Remove-readline'),
+        #LocalPatch('0001-remove-fix-cortex-a8-flag'),
         RemotePatch('https://github.com/python/cpython/pull/139.patch'),
     ]
 
@@ -41,7 +42,7 @@ class Python(Package):
             '--with-system-ffi',
             '--with-system-expat',
             '--without-ensurepip',
-            '--enable-shared',
+            #'--enable-shared',
         ])
         self.run(['echo', '"#define __ANDROID__"', '>>', 'pyconfig.h'])
 

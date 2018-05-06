@@ -56,8 +56,7 @@ class Package:
 
     def init_build_env(self):
         self.env = {}
-        self.env['CLANG_FLAGS_OPENBLAS']=os.getenv('CLANG_FLAGS_OPENBLAS')
-        self.env['AR_OPENBLAS']=os.getenv('AR_OPENBLAS')
+        self.env['CLANG_FLAGS_QPY']=os.getenv('CLANG_FLAGS_QPY')
 
         ANDROID_NDK = self._check_ndk()
 
@@ -72,19 +71,21 @@ class Package:
         CLANG_PREFIX = (ANDROID_NDK / 'toolchains' /
                         'llvm-3.7' / 'prebuilt' / f'{HOST_OS}-x86_64')
 
+        CRYSTAX_SYSROOT = ANDROID_NDK / 'sources' / 'crystax'
+
         LLVM_BASE_FLAGS = [
             '-target', target_arch().LLVM_TARGET,
             '-gcc-toolchain', self.TOOL_PREFIX,
-            '-I'+str(CLANG_PREFIX) + '/lib/clang/3.7/include'
+            '-I'+str(CLANG_PREFIX) + '/lib/clang/3.7/include',
+            f'-L{CRYSTAX_SYSROOT}/libs/{env.target_arch_qpy}',
         ]
 
         ARCH_SYSROOT = (ANDROID_NDK / 'platforms' /
                         f'android-{env.android_api_level}' /
-                        f'arch-{self.arch}' / 'usr')
+                        f'arch-{self.arch}' )
         UNIFIED_SYSROOT = (ANDROID_NDK / 'platforms' /
                         f'android-{env.android_api_level}' /
-                        f'arch-{self.arch}' )
-        CRYSTAX_SYSROOT = ANDROID_NDK / 'sources' / 'crystax'
+                        f'arch-{self.arch}' / 'usr' )
 
         cflags = ['-fPIC']
         if isinstance(target_arch(), arm) and not self.use_gcc: #use_gcc instead of clang
@@ -100,14 +101,11 @@ class Package:
             'CRYSTAX_SYSROOT': CRYSTAX_SYSROOT,
 
             # flag
-            'crystax_target_arch':env.crystax_target_arch,
+            'TARGET_ARCH':env.target_arch_qpy,
 
             # Compilers
-            'CC': f'{CLANG_PREFIX}/bin/clang',
-            'CXX': f'{CLANG_PREFIX}/bin/clang++',
-            'CPP': f'{CLANG_PREFIX}/bin/clang -E',
-
-            # Compiler flags
+            'CC': f'{CLANG_PREFIX}/bin/clang -v',
+            'CXX': f'{CLANG_PREFIX}/bin/clang++ -v',
             'CPPFLAGS': LLVM_BASE_FLAGS + [
                 f'--sysroot={ARCH_SYSROOT}',
                 '-isystem', f'{UNIFIED_SYSROOT}/include',
@@ -119,10 +117,14 @@ class Package:
             'CXXFLAGS': cflags,
             'LDFLAGS': LLVM_BASE_FLAGS + [
                 '--sysroot=' + str(ARCH_SYSROOT),
-                f'-L{CRYSTAX_SYSROOT}/libs/{env.crystax_target_arch}',
+                f'-L{CRYSTAX_SYSROOT}/libs/{env.target_arch_qpy}',
                 '-pie',
             ],
-            #'LD': str(ANDROID_NDK)+'/toolchains/arm-linux-androideabi-4.9/prebuilt/'+HOST_OS+'-x86_64/bin/arm-linux-androideabi-ld',
+            #'LDFLAGS2': [
+            #    '--sysroot=' + str(ARCH_SYSROOT),
+            #    f'-L{CRYSTAX_SYSROOT}/libs/{env.target_arch_qpy}',
+            #    '-pie',
+            #],
 
         })
 
@@ -130,6 +132,7 @@ class Package:
             dep_pkg = import_package(dep)
             self.env['CPPFLAGS'].extend(['-I', f'{dep_pkg.destdir()}/usr/include'])
             self.env['LDFLAGS'].extend(['-L', f'{dep_pkg.destdir()}/usr/lib'])
+            #self.env['LDFLAGS2'].extend(['-L', f'{dep_pkg.destdir()}/usr/lib'])
 
         for prog in ('ar', 'as', 'ld', 'objcopy', 'objdump', 'ranlib', 'strip', 'readelf'):
             self.env[prog.upper()] = self.TOOL_PREFIX / 'bin' / f'{target_arch().ANDROID_TARGET}-{prog}'
@@ -151,6 +154,10 @@ class Package:
 
     def run_with_env(self, cmd: List[str]) -> None:
         self.source.run_in_source_dir(cmd, env=self.env)
+
+    #def run_with_env_ldflags2(self, cmd: List[str]) -> None:
+    #    self.env['LDFLAGS'] = self.env['LDFLAGS2']
+    #    self.source.run_in_source_dir(cmd, env=self.env)
 
     def _check_ndk(self) -> pathlib.Path:
         ndk_path = os.getenv('ANDROID_NDK')
