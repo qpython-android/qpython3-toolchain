@@ -22,7 +22,7 @@ packages = ('openssl', 'ncurses', 'readline', 'bzip2', 'zlib', 'sqlite', 'gdbm',
 # 3rd Python modules.
 py_packages = ('openblas','numpy',)
 
-rebuild_py  = True
+rebuild_py  = False
 
 use_bintray = False
 bintray_username = 'qpython-android'

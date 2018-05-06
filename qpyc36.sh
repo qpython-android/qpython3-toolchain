@@ -13,6 +13,10 @@ PYSRC=${ROOT}/build/target/python
 ASSRC=${ROOT}/mk/qpyc3
 mkdir -p $DST
 
+
+OPENBLAS_SO=${ROOT}/build/target/openblas/usr/lib/libopenblas.so
+NUMPY_SRC=${ROOT}/src/numpy/build/lib.macosx-10.12-x86_64-3.6/numpy
+
 # clean old resources
 cd $DST && rm -fr *
 
@@ -47,6 +51,13 @@ touch $DST/lib/python3.6/config-3.6m/Makefile
 touch $DST/include/python3.6m/pyconfig.h
 cp ${PYSRC}/usr/lib/python3.6/lib-dynload/* $DST/lib/python3.6/lib-dynload
 cd ${PYSRC}/usr/lib/python3.6 &&  zip -r $DST/lib/python36.zip * --exclude lib-dynload
+
+# Copy python packages (numpy)
+cp ${OPENBLAS_SO} $DST/lib
+$STRIP $DST/lib/*.so
+
+cp -r $NUMPY_SRC $DST/lib/python3.6/site-packages/numpy
+find $DST/lib/python3.6/site-packages/numpy -name "*.so" -exec $STRIP {} \;
 
 # Strip
 $STRIP $DST/bin/python3-android5

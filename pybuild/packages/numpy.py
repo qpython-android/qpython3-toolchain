@@ -23,3 +23,8 @@ class NumPy(Package):
             f'-L../../build/target/python/usr/lib:../../build/target/openblas/usr/lib',
             f'-lpython3.6m',
         ])
+        self.run([
+            'python',
+            'setup.py',
+            'build_py',
+        ])
