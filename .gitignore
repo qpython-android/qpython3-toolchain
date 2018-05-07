@@ -2,3 +2,4 @@
 /src/*
 !/src/.keep
 *.pyc
+.DS_Store
