@@ -6,17 +6,17 @@ from ..util import target_arch
 
 
 class Python(Package):
-    source = GitSource('https://github.com/qpython-android/cpython/', branch='qpyc-3.6.4') 
+    source = GitSource('https://github.com/qpython-android/cpython/', branch='qpyc-3.6.4')
     patches = [
         # https://bugs.python.org/issue29440
         RemotePatch('https://bugs.python.org/file46517/gdbm.patch'),
         LocalPatch('cppflags'),
         LocalPatch('skip-build'),
-        #LocalPatch('py36-0001-Up-configure'),
+        LocalPatch('py36-0001-Up-configure'),
         LocalPatch('py36-pyport-undef-HAVE_LANGINFO_H'),
         LocalPatch('py36-0001-Update-compile-flag'),
         LocalPatch('py36-0001-Remove-readline'),
-        #LocalPatch('0001-remove-fix-cortex-a8-flag'),
+        #LocalPatch('0001-fix-utf-8-encoding'),
         RemotePatch('https://github.com/python/cpython/pull/139.patch'),
     ]
 

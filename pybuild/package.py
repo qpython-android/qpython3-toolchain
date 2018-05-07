@@ -118,7 +118,7 @@ class Package:
             'LDFLAGS': LLVM_BASE_FLAGS + [
                 '--sysroot=' + str(ARCH_SYSROOT),
                 f'-L{CRYSTAX_SYSROOT}/libs/{env.target_arch_qpy}',
-                '-pie',
+                #'-pie',
             ],
             #'LDFLAGS2': [
             #    '--sysroot=' + str(ARCH_SYSROOT),
