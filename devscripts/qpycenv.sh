@@ -14,7 +14,7 @@ export PATH=${ANDROID_NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/${HST}-
 
 
 # Set the clang cross compile flags
-export CLANG_FLAGS_QPY="-v -target arm-linux-androideabi -marm -mfpu=vfp -mfloat-abi=softfp --sysroot ${ANDROID_NDK}/platforms/android-${ANDROID_VER}/arch-arm -gcc-toolchain ${ANDROID_NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/${HST}-x86_64/ -I${ANDROID_NDK}/toolchains/llvm-3.7/prebuilt/${HST}-x86_64/lib/clang/3.7/include -I${ANDROID_NDK}/platforms/android-${ANDROID_VER}/arch-arm/usr/include"
+export CLANG_FLAGS_QPY=" -target arm-linux-androideabi -marm -mfpu=vfp -mfloat-abi=softfp --sysroot ${ANDROID_NDK}/platforms/android-${ANDROID_VER}/arch-arm -gcc-toolchain ${ANDROID_NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/${HST}-x86_64/ -I${ANDROID_NDK}/toolchains/llvm-3.7/prebuilt/${HST}-x86_64/lib/clang/3.7/include -I${ANDROID_NDK}/platforms/android-${ANDROID_VER}/arch-arm/usr/include"
 
 # for numpy
 

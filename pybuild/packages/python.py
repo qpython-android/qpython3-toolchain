@@ -16,7 +16,6 @@ class Python(Package):
         LocalPatch('py36-pyport-undef-HAVE_LANGINFO_H'),
         LocalPatch('py36-0001-Update-compile-flag'),
         LocalPatch('py36-0001-Remove-readline'),
-        #LocalPatch('0001-fix-utf-8-encoding'),
         RemotePatch('https://github.com/python/cpython/pull/139.patch'),
     ]
 

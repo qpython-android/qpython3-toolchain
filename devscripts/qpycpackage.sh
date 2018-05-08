@@ -15,7 +15,9 @@ mkdir -p $DST
 
 
 OPENBLAS_SO=${ROOT}/build/target/openblas/usr/lib/libopenblas.so
-NUMPY_SRC=${ROOT}/src/numpy/build/lib.macosx-10.12-x86_64-3.6/numpy
+NUMPY_LIB=${ROOT}/src/numpy/build/lib.macosx-10.12-x86_64-3.6/numpy
+NUMPY_SRC=${ROOT}/src/numpy/build/src.macosx-10.12-x86_64-3.6/numpy
+
 
 # clean old resources
 cd $DST && rm -fr *
@@ -56,7 +58,9 @@ cd ${PYSRC}/usr/lib/python3.6 &&  zip -r $DST/lib/python36.zip * --exclude lib-d
 cp ${OPENBLAS_SO} $DST/lib
 $STRIP $DST/lib/*.so
 
-cp -r $NUMPY_SRC $DST/lib/python3.6/site-packages/numpy
+cp -r $NUMPY_LIB $DST/lib/python3.6/site-packages/numpy
+cp $NUMPY_SRC/__config__.py $DST/lib/python3.6/site-packages/numpy/__config__.py
+
 find $DST/lib/python3.6/site-packages/numpy -name "*.so" -exec $STRIP {} \;
 
 # Strip
