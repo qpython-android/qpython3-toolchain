@@ -18,11 +18,12 @@ target_arch_qpy= os.getenv('TARGET_ARCH_QPY')
 #  zlib - enable the zlib module
 #  expat - enable the pyexpat module
 #  tools - some handy utility scripts from ./devscripts
-packages = ('openblas','openssl', 'ncurses', 'readline', 'bzip2', 'zlib', 'sqlite', 'gdbm', 'libffi', 'expat', 'tools')
+packages = ('openssl', 'ncurses', 'readline', 'bzip2', 'zlib', 'sqlite', 'gdbm', 'libffi', 'expat', 'tools')
 # 3rd Python modules.
-py_packages = ('numpy',)
+py_packages = ('openblas','numpy',)
 
-rebuild_py  = False
+skip_build_py  = os.path.exists(".skip_build_py")
+skip_build_py_module  = os.path.exists(".skip_build_py_module")
 
 use_bintray = False
 bintray_username = 'qpython-android'

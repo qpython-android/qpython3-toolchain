@@ -1,6 +1,7 @@
 #!/bin/bash
 
 export ANDROID_NDK=/Users/yanhecun/Develop/crystax-ndk-10.3.2
+#export ANDROID_NDK=/Users/yanhecun/Develop/android-ndk-r16b
 export ANDROID_VER=21
 export TARGET_ARCH_QPY=armeabi-v7a
 
@@ -14,7 +15,8 @@ export PATH=${ANDROID_NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/${HST}-
 
 
 # Set the clang cross compile flags
-export CLANG_FLAGS_QPY=" -target arm-linux-androideabi -marm -mfpu=vfp -mfloat-abi=softfp --sysroot ${ANDROID_NDK}/platforms/android-${ANDROID_VER}/arch-arm -gcc-toolchain ${ANDROID_NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/${HST}-x86_64/ -I${ANDROID_NDK}/toolchains/llvm-3.7/prebuilt/${HST}-x86_64/lib/clang/3.7/include -I${ANDROID_NDK}/platforms/android-${ANDROID_VER}/arch-arm/usr/include"
+export CC_FLAGS_QPY=" -marm -mfpu=vfp -mfloat-abi=softfp --sysroot ${ANDROID_NDK}/platforms/android-${ANDROID_VER}/arch-arm -I${ANDROID_NDK}/platforms/android-${ANDROID_VER}/arch-arm/usr/include"
+export CLANG_FLAGS_QPY=" -femulated-tls -target arm-linux-androideabi -marm -mfpu=vfp -mfloat-abi=softfp --sysroot ${ANDROID_NDK}/platforms/android-${ANDROID_VER}/arch-arm -gcc-toolchain ${ANDROID_NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/${HST}-x86_64/ -I${ANDROID_NDK}/toolchains/llvm-3.7/prebuilt/${HST}-x86_64/lib/clang/3.7/include -I${ANDROID_NDK}/platforms/android-${ANDROID_VER}/arch-arm/usr/include"
 
 # for numpy
 
@@ -22,6 +24,8 @@ export CLANG_FLAGS_QPY=" -target arm-linux-androideabi -marm -mfpu=vfp -mfloat-a
 export LDFLAGS="-L${ANDROID_NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/${HST}-x86_64/lib/gcc/arm-linux-androideabi/4.9 -L${ANDROID_NDK}/sources/crystax/libs/${TARGET_ARCH_QPY}"
 export CC="${ANDROID_NDK}/toolchains/llvm-3.7/prebuilt/darwin-x86_64/bin/clang  ${CLANG_FLAGS_QPY} ${LDFLAGS}"
 export CXX="${ANDROID_NDK}/toolchains/llvm-3.7/prebuilt/darwin-x86_64/bin/clang++  ${CLANG_FLAGS_QPY} ${LDFLAGS}"
+#export CC="arm-linux-androideabi-gcc ${CC_FLAGS_QPY} ${LDFLAGS}"
+#export CXX="arm-linux-androideabi-g++ ${CC_FLAGS_QPY} ${LDFLAGS}"
 export RANLIB="arm-linux-androideabi-ranlib"
 export AR="arm-linux-androideabi-ar"
 #export LD="arm-linux-androideabi-ld ${LDFLAGS}"

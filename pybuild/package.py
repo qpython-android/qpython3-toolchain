@@ -104,8 +104,8 @@ class Package:
             'TARGET_ARCH':env.target_arch_qpy,
 
             # Compilers
-            'CC': f'{CLANG_PREFIX}/bin/clang -v',
-            'CXX': f'{CLANG_PREFIX}/bin/clang++ -v',
+            'CC': f'{CLANG_PREFIX}/bin/clang -v -femulated-tls',
+            'CXX': f'{CLANG_PREFIX}/bin/clang++ -v -femulated-tls',
             'CPPFLAGS': LLVM_BASE_FLAGS + [
                 f'--sysroot={ARCH_SYSROOT}',
                 '-isystem', f'{UNIFIED_SYSROOT}/include',

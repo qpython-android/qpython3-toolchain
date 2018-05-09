@@ -4,7 +4,7 @@ from ..patch import LocalPatch
 from ..util import target_arch
 
 class NumPy(Package):
-    source = GitSource('https://github.com/AIPYX/numpy.git', alias='numpy', branch='qpyc/v1.14.3')
+    source = GitSource('https://github.com/AIPYX/numpy.git', alias='numpy', branch='qpyc/v1.11.3')
     patches = [
         LocalPatch('0001-cross-compile'),
     ]
