@@ -1,0 +1,49 @@
+From 3a483afddb3e0be23f9651ef5af65e3b2c7e3f27 Mon Sep 17 00:00:00 2001
+From: River <riverfor@gmail.com>
+Date: Thu, 10 May 2018 18:20:54 +0800
+Subject: [PATCH] add ftello64
+
+---
+ numpy/core/src/multiarray/common.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
+
+diff --git a/numpy/core/src/multiarray/common.c b/numpy/core/src/multiarray/common.c
+index bd566b77b..823081186 100644
+--- a/numpy/core/src/multiarray/common.c
++++ b/numpy/core/src/multiarray/common.c
+@@ -890,3 +890,32 @@ _may_have_objects(PyArray_Descr *dtype)
+     return (PyDataType_HASFIELDS(base) ||
+             PyDataType_FLAGCHK(base, NPY_ITEM_HASOBJECT) );
+ }
++
++/// C-runtime patch
++//extern "C"
++//{
++    // used deep inside FreeImage
++    void* lfind( const void * key, const void * base, size_t num, size_t width, int (*fncomparison)(const void *, const void * ) )
++    {
++        char* Ptr = (char*)base;
++
++        for ( size_t i = 0; i != num; i++, Ptr+=width )
++        {
++            if ( fncomparison( key, Ptr ) == 0 ) return Ptr;
++        }
++
++        return NULL;
++    }
++
++    // used in libcompress
++    int fseeko64(FILE *stream, off64_t offset, int whence)
++    {
++        return fseek( stream, offset & 0xFFFFFFFF, whence );
++    }
++
++    // used in libcompress
++    off64_t ftello64(FILE *stream)
++    {
++        return ftell( stream );
++    }
++//} // extern C
+-- 
+2.11.0 (Apple Git-81)
+

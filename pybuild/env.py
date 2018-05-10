@@ -2,7 +2,6 @@ import os
 
 target_arch = 'arm'
 android_api_level = os.getenv('ANDROID_VER')
-target_arch_qpy= os.getenv('TARGET_ARCH_QPY')
 
 # Python optional modules.
 # Available:

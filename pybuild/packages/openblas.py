@@ -6,8 +6,11 @@ from ..util import target_arch
 class OpenBLAS(Package):
     source = GitSource('https://github.com/AIPYX/OpenBLAS.git', alias='openblas', branch='qpyc/0.2.21')
     patches = [
-        LocalPatch('0001-set-stderr'),
+        #LocalPatch('0001-set-stderr'),
     ]
+
+    skip_uploading = True
+    re_configure = True
 
     def prepare(self):
         #self.run_with_env([])
@@ -19,7 +22,8 @@ class OpenBLAS(Package):
             'TARGET=ARMV7',
             'ONLY_CBLAS=1',
             f'AR={self.env["AR"]}',
-            f'CC={self.env["CC"]} {self.env["CLANG_FLAGS_QPY"]}',
+            f'CC={self.env["CC"]} {self.env["CLANG_FLAGS_QPY"]} -D__ANDROID_API__=21',
+            f'LDFLAGS=-lm -lstdc++ -lc -ldl -Bdynamic -Wl,-dynamic-linker,/system/bin/linker',
             'HOSTCC=gcc',
             'ARM_SOFTFP_ABI=1',
             ])
