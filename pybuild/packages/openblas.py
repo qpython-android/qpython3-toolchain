@@ -6,6 +6,7 @@ from ..util import target_arch
 class OpenBLAS(Package):
     source = GitSource('https://github.com/AIPYX/OpenBLAS.git', alias='openblas', branch='qpyc/0.2.21')
     patches = [
+        LocalPatch('0001-set-stderr'),
     ]
 
     def prepare(self):

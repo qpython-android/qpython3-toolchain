@@ -1,0 +1,40 @@
+From 839f10b99a49cada8b67256d22069a27ce075b49 Mon Sep 17 00:00:00 2001
+From: River <riverfor@gmail.com>
+Date: Thu, 10 May 2018 15:13:43 +0800
+Subject: [PATCH] fix stderr
+
+---
+ common.h | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/common.h b/common.h
+index 4463141c..ea0f6dc3 100644
+--- a/common.h
++++ b/common.h
+@@ -39,6 +39,9 @@
+ #ifndef COMMON_H
+ #define COMMON_H
+ 
++#define OS_ANDROID
++
++
+ #ifdef __cplusplus
+ extern "C" {
+ 	/* Assume C declarations for C++ */
+@@ -499,6 +502,13 @@ static void __inline blas_lock(volatile BLASULONG *address){
+ #include "common_param.h"
+ 
+ #ifndef STDERR
++
++extern FILE __sF[] __REMOVED_IN(23);
++
++#define stdin (&__sF[0])
++#define stdout (&__sF[1])
++#define stderr (&__sF[2])
++
+ #define STDERR stderr
+ #endif
+ 
+-- 
+2.11.0 (Apple Git-81)
+
