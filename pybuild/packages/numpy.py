@@ -7,7 +7,7 @@ class NumPy(Package):
     source = GitSource('https://github.com/AIPYX/numpy.git', alias='numpy', branch='qpyc/v1.11.3')
     patches = [
         LocalPatch('0001-cross-compile'),
-        LocalPatch('0001-add-ftello64'),
+        #LocalPatch('0001-add-ftello64'),
     ]
 
     use_gcc = True

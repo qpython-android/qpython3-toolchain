@@ -23,7 +23,7 @@ class OpenBLAS(Package):
             'ONLY_CBLAS=1',
             f'AR={self.env["AR"]}',
             f'CC={self.env["CC"]} {self.env["CLANG_FLAGS_QPY"]} -D__ANDROID_API__=21',
-            f'LDFLAGS=-lm -lstdc++ -lc -ldl -Bdynamic -Wl,-dynamic-linker,/system/bin/linker',
+            f'LDFLAGS=-lm -lgcc -lc -ldl',
             'HOSTCC=gcc',
             'ARM_SOFTFP_ABI=1',
             ])

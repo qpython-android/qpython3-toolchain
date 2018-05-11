@@ -112,13 +112,13 @@ class Package:
             'CXXFLAGS': cflags,
             'LDFLAGS': LLVM_BASE_FLAGS + [
                 '--sysroot=' + str(ARCH_SYSROOT),
+                '-L'+str(ANDROID_NDK)+'/toolchains/renderscript/prebuilt/'+HOST_OS+'-x86_64/platform/arm',
                 '-pie',
                 '-lm',
-                '-lstdc++',
+                '-lgcc',
                 '-lc',
                 '-ldl',
-                '-Bdynamic',
-                '-Wl,-dynamic-linker,/system/bin/linker',
+                '-lcompiler_rt',
             ],
         })
 
