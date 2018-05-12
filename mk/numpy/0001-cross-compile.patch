@@ -1,17 +1,17 @@
-From e26cd1be1b672362afe2eb60db58c499a0391582 Mon Sep 17 00:00:00 2001
-From: River <riverfor@gmail.com>
-Date: Fri, 11 May 2018 10:12:14 +0800
+From 352ecf92c9d926eb1f0f4b701fb1447a271dd7a7 Mon Sep 17 00:00:00 2001
+From: river <riverfor@gmail.com>
+Date: Fri, 11 May 2018 23:35:22 -0400
 Subject: [PATCH] cross-compile
 
 ---
  numpy/core/src/multiarray/common.c  | 29 +++++++++++++++++++++++++++++
  numpy/core/src/private/npy_fpmath.h |  2 ++
  numpy/distutils/system_info.py      | 14 ++++++++++----
- numpy/distutils/unixccompiler.py    |  4 ++++
- 4 files changed, 45 insertions(+), 4 deletions(-)
+ numpy/distutils/unixccompiler.py    |  6 ++++++
+ 4 files changed, 47 insertions(+), 4 deletions(-)
 
 diff --git a/numpy/core/src/multiarray/common.c b/numpy/core/src/multiarray/common.c
-index bd566b77b..7c7378bb8 100644
+index bd566b7..7c7378b 100644
 --- a/numpy/core/src/multiarray/common.c
 +++ b/numpy/core/src/multiarray/common.c
 @@ -890,3 +890,32 @@ _may_have_objects(PyArray_Descr *dtype)
@@ -48,7 +48,7 @@ index bd566b77b..7c7378bb8 100644
 +    }
 +//} // extern C
 diff --git a/numpy/core/src/private/npy_fpmath.h b/numpy/core/src/private/npy_fpmath.h
-index 86b9cf3da..ce1605801 100644
+index 86b9cf3..ce16058 100644
 --- a/numpy/core/src/private/npy_fpmath.h
 +++ b/numpy/core/src/private/npy_fpmath.h
 @@ -7,6 +7,8 @@
@@ -61,7 +61,7 @@ index 86b9cf3da..ce1605801 100644
      /* This hardcoded logic is fragile, but universal builds makes it
       * difficult to detect arch-specific features */
 diff --git a/numpy/distutils/system_info.py b/numpy/distutils/system_info.py
-index 5da1d5a03..994ec9e19 100644
+index 5da1d5a..994ec9e 100644
 --- a/numpy/distutils/system_info.py
 +++ b/numpy/distutils/system_info.py
 @@ -640,9 +640,11 @@ class system_info(object):
@@ -83,7 +83,7 @@ index 5da1d5a03..994ec9e19 100644
              # Use the system lapack from Accelerate or vecLib under OSX
              args = []
 -            link_args = []
-+            link_args = ['-lm','-lgcc', '-lc', '-ldl', '-L'+os.environ['ANDROID_NDK']+'/toolchains/renderscript/prebuilt/'+os.uname().sysname.lower()+'-x86_64/platform/arm', '-lcompiler_rt']
++            link_args = ['-lm','-lgcc', '-lc', '-ldl', '-L'+os.environ['ANDROID_NDK']+'/toolchains/renderscript/prebuilt/'+os.uname().sysname.lower()+'-x86_64/platform/arm'] #, '-lcompiler_rt']
 +            """
              if get_platform()[-4:] == 'i386' or 'intel' in get_platform() or \
                 'x86_64' in get_platform() or \
@@ -101,7 +101,7 @@ index 5da1d5a03..994ec9e19 100644
              # Use the system BLAS from Accelerate or vecLib under OSX
              args = []
 -            link_args = []
-+            link_args = ['-lm','-lgcc', '-lc', '-ldl', '-L'+os.environ['ANDROID_NDK']+'/toolchains/renderscript/prebuilt/'+os.uname().sysname.lower()+'-x86_64/platform/arm', '-lcompiler_rt']
++            link_args = ['-lm','-lgcc', '-lc', '-ldl', '-L'+os.environ['ANDROID_NDK']+'/toolchains/renderscript/prebuilt/'+os.uname().sysname.lower()+'-x86_64/platform/arm'] #, '-lcompiler_rt']
 +            """
              if get_platform()[-4:] == 'i386' or 'intel' in get_platform() or \
                 'x86_64' in get_platform() or \
@@ -115,10 +115,19 @@ index 5da1d5a03..994ec9e19 100644
                  self.set_info(extra_compile_args=args,
                                extra_link_args=link_args,
 diff --git a/numpy/distutils/unixccompiler.py b/numpy/distutils/unixccompiler.py
-index a92ccd3e7..409f2c9ae 100644
+index a92ccd3..1001ef8 100644
 --- a/numpy/distutils/unixccompiler.py
 +++ b/numpy/distutils/unixccompiler.py
-@@ -94,12 +94,15 @@ def UnixCCompiler_create_static_lib(self, objects, output_libname,
+@@ -43,6 +43,8 @@ def UnixCCompiler__compile(self, obj, src, ext, cc_args, extra_postargs, pp_opts
+         if opt not in llink_s:
+             self.linker_so = llink_s.split() + opt.split()
+ 
++    self.compiler_so[0] = 'arm-linux-androideabi-gcc'
++    self.linker_so[0] = 'arm-linux-androideabi-gcc'
+     display = '%s: %s' % (os.path.basename(self.compiler_so[0]), src)
+     try:
+         self.spawn(self.compiler_so + cc_args + [src, '-o', obj] +
+@@ -94,12 +96,15 @@ def UnixCCompiler_create_static_lib(self, objects, output_libname,
              pass
          self.mkpath(os.path.dirname(output_filename))
          tmp_objects = objects + self.objects
@@ -134,7 +143,7 @@ index a92ccd3e7..409f2c9ae 100644
              self.spawn(self.archiver + [output_filename] + objects,
                         display = display)
  
-@@ -109,6 +112,7 @@ def UnixCCompiler_create_static_lib(self, objects, output_libname,
+@@ -109,6 +114,7 @@ def UnixCCompiler_create_static_lib(self, objects, output_libname,
          # needed -- or maybe Python's configure script took care of
          # it for us, hence the check for leading colon.
          if self.ranlib:
@@ -143,5 +152,5 @@ index a92ccd3e7..409f2c9ae 100644
                                     output_filename)
              try:
 -- 
-2.11.0 (Apple Git-81)
+2.7.4
 

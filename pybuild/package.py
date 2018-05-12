@@ -118,7 +118,6 @@ class Package:
                 '-lgcc',
                 '-lc',
                 '-ldl',
-                '-lcompiler_rt',
             ],
         })
 

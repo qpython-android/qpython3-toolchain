@@ -17,15 +17,18 @@ class OpenBLAS(Package):
         pass
 
     def build(self):
+        import os
         self.run_with_env([
             'make',
             'TARGET=ARMV7',
             'ONLY_CBLAS=1',
             f'AR={self.env["AR"]}',
-            f'CC={self.env["CC"]} {self.env["CLANG_FLAGS_QPY"]} -D__ANDROID_API__=21',
+            f'CC={self.env["CC"]} {self.env["CLANG_FLAGS_QPY"]}',
+            f'FC=arm-linux-androideabi-gfortran -DANDROID -mandroid --sysroot {self.env["ARCH_SYSROOT"]}/..',
             f'LDFLAGS=-lm -lgcc -lc -ldl',
             'HOSTCC=gcc',
             'ARM_SOFTFP_ABI=1',
+            #'libs',
             ])
 
         self.run_with_env(['make', 'install', f'PREFIX={self.destdir()}/usr'])
