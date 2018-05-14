@@ -1,6 +1,6 @@
-From 352ecf92c9d926eb1f0f4b701fb1447a271dd7a7 Mon Sep 17 00:00:00 2001
+From 2910212b7efd1202ff8994d8d111fe8f12a0a341 Mon Sep 17 00:00:00 2001
 From: river <riverfor@gmail.com>
-Date: Fri, 11 May 2018 23:35:22 -0400
+Date: Sat, 12 May 2018 05:19:15 -0400
 Subject: [PATCH] cross-compile
 
 ---
@@ -11,10 +11,10 @@ Subject: [PATCH] cross-compile
  4 files changed, 47 insertions(+), 4 deletions(-)
 
 diff --git a/numpy/core/src/multiarray/common.c b/numpy/core/src/multiarray/common.c
-index bd566b7..7c7378b 100644
+index 099cc03..27ad7b6 100644
 --- a/numpy/core/src/multiarray/common.c
 +++ b/numpy/core/src/multiarray/common.c
-@@ -890,3 +890,32 @@ _may_have_objects(PyArray_Descr *dtype)
+@@ -838,3 +838,32 @@ _may_have_objects(PyArray_Descr *dtype)
      return (PyDataType_HASFIELDS(base) ||
              PyDataType_FLAGCHK(base, NPY_ITEM_HASOBJECT) );
  }
@@ -61,16 +61,16 @@ index 86b9cf3..ce16058 100644
      /* This hardcoded logic is fragile, but universal builds makes it
       * difficult to detect arch-specific features */
 diff --git a/numpy/distutils/system_info.py b/numpy/distutils/system_info.py
-index 5da1d5a..994ec9e 100644
+index 93a8e6f..50523df 100644
 --- a/numpy/distutils/system_info.py
 +++ b/numpy/distutils/system_info.py
-@@ -640,9 +640,11 @@ class system_info(object):
+@@ -698,9 +698,11 @@ class system_info(object):
                  continue
  
              if d not in ret:
 -                ret.append(d)
 +                # Hack for QPython cross compile
-+                if not d.lower().startswith("/us"):
++                if (not d.lower().startswith("/us")) and (not d.lower().startswith("/root")):
 +                    ret.append(d)
  
 -        log.debug('( %s = %s )', key, ':'.join(ret))
@@ -78,8 +78,8 @@ index 5da1d5a..994ec9e 100644
          return ret
  
      def get_lib_dirs(self, key='library_dirs'):
-@@ -1490,7 +1492,8 @@ class lapack_opt_info(system_info):
-         if sys.platform == 'darwin' and not atlas_info:
+@@ -1553,7 +1555,8 @@ class lapack_opt_info(system_info):
+                                              lapack_mkl_info):
              # Use the system lapack from Accelerate or vecLib under OSX
              args = []
 -            link_args = []
@@ -88,7 +88,7 @@ index 5da1d5a..994ec9e 100644
              if get_platform()[-4:] == 'i386' or 'intel' in get_platform() or \
                 'x86_64' in get_platform() or \
                 'i386' in platform.platform():
-@@ -1511,6 +1514,7 @@ class lapack_opt_info(system_info):
+@@ -1574,6 +1577,7 @@ class lapack_opt_info(system_info):
                  else:
                      args.extend(['-faltivec'])
                  link_args.extend(['-Wl,-framework', '-Wl,vecLib'])
@@ -96,8 +96,8 @@ index 5da1d5a..994ec9e 100644
              if args:
                  self.set_info(extra_compile_args=args,
                                extra_link_args=link_args,
-@@ -1590,7 +1594,8 @@ class blas_opt_info(system_info):
-         if sys.platform == 'darwin' and not atlas_info:
+@@ -1659,7 +1663,8 @@ class blas_opt_info(system_info):
+                                              blas_mkl_info or blis_info):
              # Use the system BLAS from Accelerate or vecLib under OSX
              args = []
 -            link_args = []
@@ -106,7 +106,7 @@ index 5da1d5a..994ec9e 100644
              if get_platform()[-4:] == 'i386' or 'intel' in get_platform() or \
                 'x86_64' in get_platform() or \
                 'i386' in platform.platform():
-@@ -1615,6 +1620,7 @@ class blas_opt_info(system_info):
+@@ -1684,6 +1689,7 @@ class blas_opt_info(system_info):
                  args.extend([
                      '-I/System/Library/Frameworks/vecLib.framework/Headers'])
                  link_args.extend(['-Wl,-framework', '-Wl,vecLib'])
@@ -115,19 +115,19 @@ index 5da1d5a..994ec9e 100644
                  self.set_info(extra_compile_args=args,
                                extra_link_args=link_args,
 diff --git a/numpy/distutils/unixccompiler.py b/numpy/distutils/unixccompiler.py
-index a92ccd3..1001ef8 100644
+index 6ed5eec..418cf17 100644
 --- a/numpy/distutils/unixccompiler.py
 +++ b/numpy/distutils/unixccompiler.py
-@@ -43,6 +43,8 @@ def UnixCCompiler__compile(self, obj, src, ext, cc_args, extra_postargs, pp_opts
+@@ -44,6 +44,8 @@ def UnixCCompiler__compile(self, obj, src, ext, cc_args, extra_postargs, pp_opts
          if opt not in llink_s:
              self.linker_so = llink_s.split() + opt.split()
  
-+    self.compiler_so[0] = 'arm-linux-androideabi-gcc'
++    #self.compiler_so[0] = 'arm-linux-androideabi-gcc'
 +    self.linker_so[0] = 'arm-linux-androideabi-gcc'
      display = '%s: %s' % (os.path.basename(self.compiler_so[0]), src)
-     try:
-         self.spawn(self.compiler_so + cc_args + [src, '-o', obj] +
-@@ -94,12 +96,15 @@ def UnixCCompiler_create_static_lib(self, objects, output_libname,
+ 
+     # gcc style automatic dependencies, outputs a makefile (-MF) that lists
+@@ -107,12 +109,15 @@ def UnixCCompiler_create_static_lib(self, objects, output_libname,
              pass
          self.mkpath(os.path.dirname(output_filename))
          tmp_objects = objects + self.objects
@@ -143,7 +143,7 @@ index a92ccd3..1001ef8 100644
              self.spawn(self.archiver + [output_filename] + objects,
                         display = display)
  
-@@ -109,6 +114,7 @@ def UnixCCompiler_create_static_lib(self, objects, output_libname,
+@@ -122,6 +127,7 @@ def UnixCCompiler_create_static_lib(self, objects, output_libname,
          # needed -- or maybe Python's configure script took care of
          # it for us, hence the check for leading colon.
          if self.ranlib:

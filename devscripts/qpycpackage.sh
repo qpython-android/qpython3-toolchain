@@ -5,7 +5,10 @@
 #
 
 # Please set the correct STRIP for your platform
-STRIP=${ANDROID_NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64/bin/arm-linux-androideabi-strip
+HST=`uname`
+HST=`echo $HST|tr '[:upper:]' '[:lower:]'`
+
+STRIP=${ANDROID_NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/${HST}-x86_64/bin/arm-linux-androideabi-strip
 
 ROOT=`pwd`
 DST=${ROOT}/build/qpyc36
@@ -15,8 +18,8 @@ mkdir -p $DST
 
 
 OPENBLAS_SO=${ROOT}/build/target/openblas/usr/lib/libopenblas.so
-NUMPY_LIB=${ROOT}/src/numpy/build/lib.macosx-10.12-x86_64-3.6/numpy
-NUMPY_SRC=${ROOT}/src/numpy/build/src.macosx-10.12-x86_64-3.6/numpy
+NUMPY_LIB=${ROOT}/src/numpy/build/lib.linux-x86_64-3.6/numpy
+NUMPY_SRC=${ROOT}/src/numpy/build/src.linux-x86_64-3.6/numpy
 
 
 # clean old resources
