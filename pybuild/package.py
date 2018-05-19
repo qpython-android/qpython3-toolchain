@@ -10,7 +10,7 @@ from . import env
 from .arch import arm
 from .patch import Patch, RemotePatch
 from .source import Source, GitSource, URLSource
-from .util import BASE, run_in_dir, target_arch
+from .util import BASE, run_in_dir, target_arch, system
 
 
 class Package:
@@ -57,8 +57,11 @@ class Package:
     def init_build_env(self):
         self.env = {}
         self.env['CLANG_FLAGS_QPY']=os.getenv('CLANG_FLAGS_QPY')
+        self.env['CC_FLAGS_QPY']=os.getenv('CC_FLAGS_QPY')
 
         ANDROID_NDK = self._check_ndk()
+
+        self.env['ANDROID_NDK'] = ANDROID_NDK
 
         HOST_OS = os.uname().sysname.lower()
 
@@ -112,9 +115,7 @@ class Package:
             'CXXFLAGS': cflags,
             'LDFLAGS': LLVM_BASE_FLAGS + [
                 '--sysroot=' + str(ARCH_SYSROOT),
-                '-L'+str(ANDROID_NDK)+'/toolchains/renderscript/prebuilt/'+HOST_OS+'-x86_64/platform/arm',
                 '-pie',
-                '-lm',
                 '-lgcc',
                 '-lc',
                 '-ldl',
@@ -167,6 +168,10 @@ class Package:
 
     def build(self):
         raise NotImplementedError
+
+    def system(self, cmd: str) -> None:
+        cmd = "cd %s && %s" % (self.source.source_dir, cmd)
+        return system(cmd)
 
     def create_tarball(self):
         print(f'Creating {self.tarball_name} in {self.DIST_PATH}...')

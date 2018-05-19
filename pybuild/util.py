@@ -24,6 +24,9 @@ def target_arch() -> arch.Arch:
     platform_name = os.getenv('ANDROID_PLATFORM', default_target_arch)
     return getattr(arch, platform_name)()
 
+def system(cmd: str) -> None:
+    print("system:" + cmd)
+    os.system(cmd)
 
 def rmtree(path: Path) -> None:
     print(f'Removing {os.path.relpath(path)}')
