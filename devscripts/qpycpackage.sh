@@ -20,6 +20,9 @@ mkdir -p $DST
 OPENBLAS_SO=${ROOT}/build/target/openblas/usr/lib/libopenblas.so
 NUMPY_LIB=${ROOT}/src/numpy/build/lib.linux-x86_64-3.6/numpy
 NUMPY_SRC=${ROOT}/src/numpy/build/src.linux-x86_64-3.6/numpy
+SCIPY_LIB=${ROOT}/src/scipy/build/lib.linux-x86_64-3.6/scipy
+SCIPY_SRC=${ROOT}/src/scipy/build/src.linux-x86_64-3.6/scipy
+
 
 
 # clean old resources
@@ -65,6 +68,8 @@ cp ${OPENBLAS_SO} $DST/lib
 $STRIP $DST/lib/*.so
 
 cp -r $NUMPY_LIB $DST/lib/python3.6/site-packages/numpy
+cp -r $SCIPY_LIB $DST/lib/python3.6/site-packages/scipy
+
 cp $NUMPY_SRC/__config__.py $DST/lib/python3.6/site-packages/numpy/__config__.py
 
 
