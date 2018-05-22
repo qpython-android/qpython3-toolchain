@@ -66,5 +66,7 @@ def main():
         build_package('python')
 
     if not skip_build_py_module:
+        os.putenv('AS', 'arm-linux-androideabi-as')
+        os.putenv('LD', 'arm-linux-androideabi-ld')
         for item in py_packages:
             build_package(item)

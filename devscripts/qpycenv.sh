@@ -25,8 +25,8 @@ export CXX="arm-linux-androideabi-g++ ${CC_FLAGS_QPY} ${LDFLAGS} -I${ANDROID_NDK
 
 export RANLIB="arm-linux-androideabi-ranlib"
 export AR="arm-linux-androideabi-ar"
-export AS="arm-linux-androideabi-as"
-export LD="arm-linux-androideabi-ld"
-export LDSHARED="arm-linux-androideabi-ld"
+#export AS="arm-linux-androideabi-as"
+#export LD="arm-linux-androideabi-ld"
+#export LDSHARED="arm-linux-androideabi-ld"
 
 export FC="arm-linux-androideabi-gfortran -DANDROID -mandroid --sysroot ${ANDROID_NDK}/platforms/android-${ANDROID_VER}/arch-arm"
