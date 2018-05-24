@@ -16,16 +16,6 @@ class NumPy(Package):
         self.run(['cp', self.filesdir / 'site.cfg', './'])
 
     def build(self):
-        self.run([
-            'python',
-            'setup.py',
-            'build_ext',
-            f'-I../../build/target/python/usr/include/python3.6m:../../build/target/openblas/usr/include',
-            f'-L../../build/target/python/usr/lib:../../build/target/openblas/usr/lib',
-            f'-lpython3.6m',
-        ])
-        self.run([
-            'python',
-            'setup.py',
-            'build_py',
-        ])
+        self.system(
+            f'LD="arm-linux-androideabi-ld" python setup.py build_ext -I../../build/target/python/usr/include/python3.6m:../../build/target/openblas/usr/include -L../../build/target/python/usr/lib:../../build/target/openblas/usr/lib -lpython3.6m && python setup.py build_py',
+        )
