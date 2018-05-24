@@ -1,6 +1,6 @@
-From 9d6bee57034f46cacd3fa55030c5e6826c51993f Mon Sep 17 00:00:00 2001
+From 21306078ec23b8f24f7563f053a7c85943a4cb4c Mon Sep 17 00:00:00 2001
 From: river <riverfor@gmail.com>
-Date: Mon, 21 May 2018 11:54:02 -0400
+Date: Wed, 23 May 2018 05:12:53 -0400
 Subject: [PATCH] cross-compile
 
 ---
@@ -72,20 +72,20 @@ index e5175f1..3f154e9 100644
          /* complete failure, disable elision */
          init = -1;
 diff --git a/numpy/core/src/private/npy_fpmath.h b/numpy/core/src/private/npy_fpmath.h
-index 86b9cf3..ce16058 100644
+index 86b9cf3..6901c87 100644
 --- a/numpy/core/src/private/npy_fpmath.h
 +++ b/numpy/core/src/private/npy_fpmath.h
 @@ -7,6 +7,8 @@
  #include "numpy/npy_cpu.h"
  #include "numpy/npy_common.h"
  
-+#define HAVE_LDOUBLE_IEEE_DOUBLE_LE
++//#define HAVE_LDOUBLE_IEEE_DOUBLE_LE
 +
  #ifdef NPY_OS_DARWIN
      /* This hardcoded logic is fragile, but universal builds makes it
       * difficult to detect arch-specific features */
 diff --git a/numpy/distutils/system_info.py b/numpy/distutils/system_info.py
-index 93a8e6f..ae3cbfa 100644
+index 93a8e6f..7f436db 100644
 --- a/numpy/distutils/system_info.py
 +++ b/numpy/distutils/system_info.py
 @@ -698,9 +698,11 @@ class system_info(object):
@@ -107,7 +107,7 @@ index 93a8e6f..ae3cbfa 100644
              # Use the system lapack from Accelerate or vecLib under OSX
              args = []
 -            link_args = []
-+            link_args = ['-lgcc', '-lc', '-ldl', '-L'+os.environ['ANDROID_NDK']+'/toolchains/renderscript/prebuilt/'+os.uname().sysname.lower()+'-x86_64/platform/arm'] #, '-lcompiler_rt']
++            link_args = []#'-lgcc', '-lc', '-ldl', '-L'+os.environ['ANDROID_NDK']+'/toolchains/renderscript/prebuilt/'+os.uname().sysname.lower()+'-x86_64/platform/arm'] #, '-lcompiler_rt']
 +            """
              if get_platform()[-4:] == 'i386' or 'intel' in get_platform() or \
                 'x86_64' in get_platform() or \
@@ -125,7 +125,7 @@ index 93a8e6f..ae3cbfa 100644
              # Use the system BLAS from Accelerate or vecLib under OSX
              args = []
 -            link_args = []
-+            link_args = ['-lgcc', '-lc', '-ldl', '-L'+os.environ['ANDROID_NDK']+'/toolchains/renderscript/prebuilt/'+os.uname().sysname.lower()+'-x86_64/platform/arm'] #, '-lcompiler_rt']
++            link_args = []#'-lgcc', '-lc', '-ldl', '-L'+os.environ['ANDROID_NDK']+'/toolchains/renderscript/prebuilt/'+os.uname().sysname.lower()+'-x86_64/platform/arm'] #, '-lcompiler_rt']
 +            """
              if get_platform()[-4:] == 'i386' or 'intel' in get_platform() or \
                 'x86_64' in get_platform() or \
@@ -139,14 +139,14 @@ index 93a8e6f..ae3cbfa 100644
                  self.set_info(extra_compile_args=args,
                                extra_link_args=link_args,
 diff --git a/numpy/distutils/unixccompiler.py b/numpy/distutils/unixccompiler.py
-index 6ed5eec..b747b9b 100644
+index 6ed5eec..418cf17 100644
 --- a/numpy/distutils/unixccompiler.py
 +++ b/numpy/distutils/unixccompiler.py
 @@ -44,6 +44,8 @@ def UnixCCompiler__compile(self, obj, src, ext, cc_args, extra_postargs, pp_opts
          if opt not in llink_s:
              self.linker_so = llink_s.split() + opt.split()
  
-+    #self.compiler_so[0] = 'arm-linux-androideabi-gcc'
++    self.compiler_so[0] = 'arm-linux-androideabi-gcc'
 +    self.linker_so[0] = 'arm-linux-androideabi-gcc'
      display = '%s: %s' % (os.path.basename(self.compiler_so[0]), src)
  
