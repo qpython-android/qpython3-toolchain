@@ -12,10 +12,10 @@ HST=`echo $HST|tr '[:upper:]' '[:lower:]'`
 export PATH=${ANDROID_NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/${HST}-x86_64/bin:${ANDROID_NDK}/toolchains/llvm/prebuilt/${HST}-x86_64/bin:$PATH
 #
 #
-export CC_FLAGS_QPY=" -std=c99 --sysroot ${ANDROID_NDK}/platforms/android-${ANDROID_VER}/arch-arm -I${ANDROID_NDK}/sysroot/usr/include -I${ANDROID_NDK}/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=21"
+export CC_FLAGS_QPY=" -marm -mfloat-abi=softfp -std=gnu11 --sysroot ${ANDROID_NDK}/platforms/android-${ANDROID_VER}/arch-arm -I${ANDROID_NDK}/sysroot/usr/include -I${ANDROID_NDK}/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=21"
 export CLANG_FLAGS_QPY=" -femulated-tls -target arm-linux-androideabi --sysroot ${ANDROID_NDK}/platforms/android-${ANDROID_VER}/arch-arm -gcc-toolchain ${ANDROID_NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/${HST}-x86_64/ -I${ANDROID_NDK}/toolchains/x86_64-4.9/prebuilt/linux-x86_64/lib/gcc/x86_64-linux-android/4.9.x/include -I${ANDROID_NDK}/sysroot/usr/include -I${ANDROID_NDK}/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=21"
 #
-export LDFLAGS_QPY="--sysroot ${ANDROID_NDK}/platforms/android-${ANDROID_VER}/arch-arm -L${ANDROID_NDK}/platforms/android-${ANDROID_VER}/arch-arm/usr/lib -L${ANDROID_NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/${HST}-x86_64/lib/gcc/arm-linux-androideabi/4.9 -lc -ldl  -L${ANDROID_NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/${HST}-x86_64/arm-linux-androideabi/lib -shared"
+export LDFLAGS_QPY="--sysroot ${ANDROID_NDK}/platforms/android-${ANDROID_VER}/arch-arm -L${ANDROID_NDK}/platforms/android-${ANDROID_VER}/arch-arm/usr/lib -L${ANDROID_NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/${HST}-x86_64/lib/gcc/arm-linux-androideabi/4.9 -lc -ldl  -lgcc -L${ANDROID_NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/${HST}-x86_64/arm-linux-androideabi/lib -shared"
 #
 export CC="arm-linux-androideabi-gcc ${CC_FLAGS_QPY} ${LDFLAGS_QPY}"
 export CXX="arm-linux-androideabi-g++ ${CC_FLAGS_QPY} ${LDFLAGS_QPY} -I${ANDROID_NDK}/sources/cxx-stl/gnu-libstdc++/4.9/include"

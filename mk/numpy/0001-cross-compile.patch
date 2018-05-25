@@ -107,7 +107,7 @@ index 93a8e6f..7f436db 100644
              # Use the system lapack from Accelerate or vecLib under OSX
              args = []
 -            link_args = []
-+            link_args = []#'-lgcc', '-lc', '-ldl', '-L'+os.environ['ANDROID_NDK']+'/toolchains/renderscript/prebuilt/'+os.uname().sysname.lower()+'-x86_64/platform/arm'] #, '-lcompiler_rt']
++            link_args = ['-lgcc',] #'-lc', '-ldl', '-L'+os.environ['ANDROID_NDK']+'/toolchains/renderscript/prebuilt/'+os.uname().sysname.lower()+'-x86_64/platform/arm'] #, '-lcompiler_rt']
 +            """
              if get_platform()[-4:] == 'i386' or 'intel' in get_platform() or \
                 'x86_64' in get_platform() or \
@@ -125,7 +125,7 @@ index 93a8e6f..7f436db 100644
              # Use the system BLAS from Accelerate or vecLib under OSX
              args = []
 -            link_args = []
-+            link_args = []#'-lgcc', '-lc', '-ldl', '-L'+os.environ['ANDROID_NDK']+'/toolchains/renderscript/prebuilt/'+os.uname().sysname.lower()+'-x86_64/platform/arm'] #, '-lcompiler_rt']
++            link_args = ['-lgcc',]#'-lc', '-ldl', '-L'+os.environ['ANDROID_NDK']+'/toolchains/renderscript/prebuilt/'+os.uname().sysname.lower()+'-x86_64/platform/arm'] #, '-lcompiler_rt']
 +            """
              if get_platform()[-4:] == 'i386' or 'intel' in get_platform() or \
                 'x86_64' in get_platform() or \
