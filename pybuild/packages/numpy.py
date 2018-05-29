@@ -13,8 +13,7 @@ class NumPy(Package):
     use_gcc = True
 
     def prepare(self):
-        #self.run(['cp', self.filesdir / 'site.cfg', './'])
-        pass
+        self.run(['cp', self.filesdir / 'site.cfg', './'])
 
     def build(self):
         self.run([
