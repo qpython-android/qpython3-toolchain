@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export ANDROID_NDK=/Users/yanhecun/Develop/android-ndk-r16b
+export ANDROID_NDK=/home/QPY/android-ndk-r17
 export ANDROID_VER=21
 export TARGET_ARCH_QPY=armeabi-v7a
 
