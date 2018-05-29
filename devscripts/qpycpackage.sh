@@ -15,8 +15,8 @@ mkdir -p $DST
 
 
 OPENBLAS_SO=${ROOT}/build/target/openblas/usr/lib/libopenblas.so
-NUMPY_LIB=${ROOT}/src/numpy/build/lib.macosx-10.12-x86_64-3.6/numpy
-NUMPY_SRC=${ROOT}/src/numpy/build/src.macosx-10.12-x86_64-3.6/numpy
+NUMPY_LIB=${ROOT}/src/numpy/build/lib.linux-x86_64-3.6/numpy
+NUMPY_SRC=${ROOT}/src/numpy/build/lib.linux-x86_64-3.6/numpy
 
 
 # clean old resources
