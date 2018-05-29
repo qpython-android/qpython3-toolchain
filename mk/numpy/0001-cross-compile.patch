@@ -1,31 +1,17 @@
-From e4f2eae6c0ddadabb55039f26966e3dbcdcc4002 Mon Sep 17 00:00:00 2001
+From 21306078ec23b8f24f7563f053a7c85943a4cb4c Mon Sep 17 00:00:00 2001
 From: river <riverfor@gmail.com>
-Date: Fri, 25 May 2018 05:36:39 -0400
+Date: Wed, 23 May 2018 05:12:53 -0400
 Subject: [PATCH] cross-compile
 
 ---
- numpy/core/setup_common.py             |  2 +-
  numpy/core/src/multiarray/common.c     | 29 +++++++++++++++++++++++++++++
  numpy/core/src/multiarray/temp_elide.c |  4 ++--
  numpy/core/src/private/npy_fpmath.h    |  2 ++
  numpy/distutils/system_info.py         | 14 ++++++++++----
  numpy/distutils/unixccompiler.py       |  6 ++++++
  numpy/linalg/umath_linalg.c.src        |  2 +-
- 7 files changed, 51 insertions(+), 8 deletions(-)
+ 6 files changed, 50 insertions(+), 7 deletions(-)
 
-diff --git a/numpy/core/setup_common.py b/numpy/core/setup_common.py
-index bd093c5..3300c65 100644
---- a/numpy/core/setup_common.py
-+++ b/numpy/core/setup_common.py
-@@ -130,7 +130,7 @@ OPTIONAL_INTRINSICS = [("__builtin_isnan", '5.'),
-                        ("__builtin_bswap32", '5u'),
-                        ("__builtin_bswap64", '5u'),
-                        ("__builtin_expect", '5, 0'),
--                       ("__builtin_mul_overflow", '5, 5, (int*)5'),
-+                       #("__builtin_mul_overflow", '5, 5, (int*)5'),
-                        # broken on OSX 10.11, make sure its not optimized away
-                        ("volatile int r = __builtin_cpu_supports", '"sse"',
-                         "stdio.h", "__BUILTIN_CPU_SUPPORTS"),
 diff --git a/numpy/core/src/multiarray/common.c b/numpy/core/src/multiarray/common.c
 index 099cc03..27ad7b6 100644
 --- a/numpy/core/src/multiarray/common.c
@@ -99,7 +85,7 @@ index 86b9cf3..6901c87 100644
      /* This hardcoded logic is fragile, but universal builds makes it
       * difficult to detect arch-specific features */
 diff --git a/numpy/distutils/system_info.py b/numpy/distutils/system_info.py
-index 93a8e6f..edae5cd 100644
+index 93a8e6f..7f436db 100644
 --- a/numpy/distutils/system_info.py
 +++ b/numpy/distutils/system_info.py
 @@ -698,9 +698,11 @@ class system_info(object):
@@ -121,7 +107,7 @@ index 93a8e6f..edae5cd 100644
              # Use the system lapack from Accelerate or vecLib under OSX
              args = []
 -            link_args = []
-+            link_args = ['-lgcc','-L'+os.environ['ANDROID_NDK']+'/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/arm-linux-androideabi/lib'] #,'-static-libgfortran'] #'-lc', '-ldl', '-L'+os.environ['ANDROID_NDK']+'/toolchains/renderscript/prebuilt/'+os.uname().sysname.lower()+'-x86_64/platform/arm'] #, '-lcompiler_rt']
++            link_args = ['-lgcc',] #'-lc', '-ldl', '-L'+os.environ['ANDROID_NDK']+'/toolchains/renderscript/prebuilt/'+os.uname().sysname.lower()+'-x86_64/platform/arm'] #, '-lcompiler_rt']
 +            """
              if get_platform()[-4:] == 'i386' or 'intel' in get_platform() or \
                 'x86_64' in get_platform() or \
@@ -139,7 +125,7 @@ index 93a8e6f..edae5cd 100644
              # Use the system BLAS from Accelerate or vecLib under OSX
              args = []
 -            link_args = []
-+            link_args = ['-lgcc','-L'+os.environ['ANDROID_NDK']+'/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/arm-linux-androideabi/lib',] #'-static-libgfortran']#'-lc', '-ldl', '-L'+os.environ['ANDROID_NDK']+'/toolchains/renderscript/prebuilt/'+os.uname().sysname.lower()+'-x86_64/platform/arm'] #, '-lcompiler_rt']
++            link_args = ['-lgcc',]#'-lc', '-ldl', '-L'+os.environ['ANDROID_NDK']+'/toolchains/renderscript/prebuilt/'+os.uname().sysname.lower()+'-x86_64/platform/arm'] #, '-lcompiler_rt']
 +            """
              if get_platform()[-4:] == 'i386' or 'intel' in get_platform() or \
                 'x86_64' in get_platform() or \
@@ -160,8 +146,8 @@ index 6ed5eec..418cf17 100644
          if opt not in llink_s:
              self.linker_so = llink_s.split() + opt.split()
  
-+    self.compiler_so[0] = 'arm-linux-androideabi-gcc'
-+    self.linker_so[0] = 'arm-linux-androideabi-gcc -shared'
++    #self.compiler_so[0] = 'arm-linux-androideabi-gcc'
++    #self.linker_so[0] = 'arm-linux-androideabi-gcc'
      display = '%s: %s' % (os.path.basename(self.compiler_so[0]), src)
  
      # gcc style automatic dependencies, outputs a makefile (-MF) that lists
