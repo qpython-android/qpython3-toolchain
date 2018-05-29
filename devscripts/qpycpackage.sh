@@ -68,7 +68,7 @@ cp ${OPENBLAS_SO} $DST/lib
 $STRIP $DST/lib/*.so
 
 cp -r $NUMPY_LIB $DST/lib/python3.6/site-packages/numpy
-cp -r $SCIPY_LIB $DST/lib/python3.6/site-packages/scipy
+#cp -r $SCIPY_LIB $DST/lib/python3.6/site-packages/scipy
 
 cp $NUMPY_SRC/__config__.py $DST/lib/python3.6/site-packages/numpy/__config__.py
 

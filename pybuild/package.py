@@ -116,9 +116,8 @@ class Package:
             'LDFLAGS': LLVM_BASE_FLAGS + [
                 '--sysroot=' + str(ARCH_SYSROOT),
                 '-pie',
-                '-lgcc',
                 '-lc',
-                '-ldl',
+                '-lm',
             ],
         })
 
