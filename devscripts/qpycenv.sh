@@ -17,10 +17,10 @@ export PATH=${ANDROID_NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/${HST}-
 export CC_FLAGS_QPY=" -marm -mfpu=vfp -mfloat-abi=softfp -std=gnu11 --sysroot ${ANDROID_NDK}/platforms/android-${ANDROID_VER}/arch-arm -I${ANDROID_NDK}/sysroot/usr/include -I${ANDROID_NDK}/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=21"
 export CLANG_FLAGS_QPY=" -femulated-tls -target arm-linux-androideabi -marm -mfpu=vfp -mfloat-abi=softfp --sysroot ${ANDROID_NDK}/platforms/android-${ANDROID_VER}/arch-arm -gcc-toolchain ${ANDROID_NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/${HST}-x86_64/ -I${ANDROID_NDK}/sysroot/usr/include -I${ANDROID_NDK}/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=21"
 
-export LDFLAGS="-L${ANDROID_NDK}/platforms/android-${ANDROID_VER}/arch-arm/usr/lib -L${ANDROID_NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/${HST}-x86_64/lib/gcc/arm-linux-androideabi/4.9 -L${ANDROID_NDK}/toolchains/renderscript/prebuilt/${HST}-x86_64/platform/arm -lm -lgcc -lc -ldl"
+export LDFLAGS=" -shared --sysroot ${ANDROID_NDK}/platforms/android-${ANDROID_VER}/arch-arm -L${ANDROID_NDK}/platforms/android-${ANDROID_VER}/arch-arm/usr/lib -L${ANDROID_NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/${HST}-x86_64/lib/gcc/arm-linux-androideabi/4.9.x -L${ANDROID_NDK_GFORTRAN}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/arm-linux-androideabi/lib -lm -lgcc -lc -ldl -lgfortran"
 
 export CC="arm-linux-androideabi-gcc ${CC_FLAGS_QPY} ${LDFLAGS}"
-export CXX="arm-linux-androideabi-g++ ${CC_FLAGS_QPY} ${LDFLAGS}"
+export CXX="arm-linux-androideabi-g++ ${CC_FLAGS_QPY} ${LDFLAGS} -I${ANDROID_NDK}/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a/include"
 #export CC="${ANDROID_NDK}/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang ${CLANG_FLAGS_QPY} ${LDFLAGS}"
 #export CXX="${ANDROID_NDK}/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ ${CLANG_FLAGS_QPY} ${LDFLAGS}"
 

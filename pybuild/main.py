@@ -69,7 +69,7 @@ def main():
         os.putenv('AS', 'arm-linux-androideabi-as')
         os.putenv('LD', 'arm-linux-androideabi-ld')
         os.putenv('LDSHARED', 'arm-linux-androideabi-ld')
-        CC = "%s %s %s" % ("arm-linux-androideabi-gcc", os.getenv('CC_FLAGS_QPY'), os.getenv('LDFLAGS_QPY'))
+        CC = "%s %s %s" % ("arm-linux-androideabi-gcc", os.getenv('CC_FLAGS_QPY'), os.getenv('LDFLAGS'))
         os.putenv('CC', CC)
         for item in py_packages:
             build_package(item)
