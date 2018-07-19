@@ -17,9 +17,9 @@ android_api_level = os.getenv('ANDROID_VER')
 #  zlib - enable the zlib module
 #  expat - enable the pyexpat module
 #  tools - some handy utility scripts from ./devscripts
-packages = ('openssl', 'ncurses', 'readline', 'bzip2', 'zlib', 'sqlite', 'gdbm', 'libffi', 'expat', 'tools')
+packages = ('openssl', 'ncurses', 'readline', 'bzip2', 'xz', 'zlib', 'sqlite', 'gdbm', 'libffi', 'expat', 'tools')
 # 3rd Python modules.
-py_packages = ('scipy',)
+py_packages = ('openblas','numpy','scipy',)
 
 skip_build_py  = os.path.exists(".skip_build_py")
 skip_build_py_module  = os.path.exists(".skip_build_py_module")
