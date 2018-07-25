@@ -55,7 +55,7 @@ index 4463141..f3d9d32 100644
  
  #ifndef STDERR
 +
-+//extern FILE __sF[3] __REMOVED_IN(23);
++//extern FILE __sF[3] __REMOVED_IN(21);
 +
 +//#define stdin (&__sF[0])
 +//#define stdout (&__sF[1])

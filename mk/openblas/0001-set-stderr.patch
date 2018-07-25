@@ -26,11 +26,11 @@ index 4463141c..ea0f6dc3 100644
  
  #ifndef STDERR
 +
-+//extern FILE __sF[3] __REMOVED_IN(23);
-+
++extern FILE __sF[3] __REMOVED_IN(23);
++#undef stderr
 +//#define stdin (&__sF[0])
 +//#define stdout (&__sF[1])
-+//#define stderr (&__sF[2])
++#define stderr (&__sF[2])
 +
  #define STDERR stderr
  #endif

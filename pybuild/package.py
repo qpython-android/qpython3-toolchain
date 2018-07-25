@@ -62,6 +62,7 @@ class Package:
         ANDROID_NDK = self._check_ndk()
 
         self.env['ANDROID_NDK'] = ANDROID_NDK
+        self.env['ANDROID_NDK_GFORTRAN'] = os.getenv('ANDROID_NDK_GFORTRAN')
 
         HOST_OS = os.uname().sysname.lower()
 
