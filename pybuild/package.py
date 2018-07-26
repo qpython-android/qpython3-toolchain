@@ -58,6 +58,7 @@ class Package:
         self.env = {}
         self.env['CLANG_FLAGS_QPY']=os.getenv('CLANG_FLAGS_QPY','')
         self.env['CC_FLAGS_QPY']=os.getenv('CC_FLAGS_QPY','')
+        self.env['CLANG_FLAGS_QPY']=os.getenv('CLANG_FLAGS_QPY','')
 
         ANDROID_NDK = self._check_ndk()
 

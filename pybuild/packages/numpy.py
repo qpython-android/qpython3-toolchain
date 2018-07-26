@@ -10,7 +10,7 @@ class NumPy(Package):
         #LocalPatch('0001-add-ftello64'),
     ]
 
-    use_gcc = True
+    #use_gcc = True
 
     def prepare(self):
         self.run(['cp', self.filesdir / 'site.cfg', './'])
@@ -22,7 +22,7 @@ class NumPy(Package):
             'build_ext',
             f'-I../../build/target/python/usr/include/python3.6m:../../build/target/openblas/usr/include',
             f'-L../../build/target/python/usr/lib:../../build/target/openblas/usr/lib',
-            f'-lpython3.6m',
+            f'-lpython3.6m,m',
         ])
         self.run([
             'python',

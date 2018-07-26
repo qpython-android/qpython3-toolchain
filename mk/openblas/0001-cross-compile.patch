@@ -17,13 +17,13 @@ index bd361a1..9c81c5e 100644
  
  ifeq ($(OSNAME), Linux)
 -EXTRALIB	+= -lm
-+#EXTRALIB	+= -lm
++EXTRALIB	+= -lm
  NO_EXPRECISION = 1
  endif
  
  ifeq ($(OSNAME), Android)
 -EXTRALIB	+= -lm
-+#EXTRALIB	+= -lm
++EXTRALIB	+= -lm
  endif
  
  ifeq ($(OSNAME), AIX)
@@ -32,7 +32,7 @@ index bd361a1..9c81c5e 100644
  ifeq ($(OSNAME), Android)
  ifeq ($(ARM_SOFTFP_ABI), 1)
 -EXTRALIB	+= -lm
-+#EXTRALIB	+= -lm
++EXTRALIB	+= -lm
  else
  EXTRALIB	+= -Wl,-lm_hard
  endif
