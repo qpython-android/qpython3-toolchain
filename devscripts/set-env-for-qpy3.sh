@@ -1,5 +1,7 @@
 #!/bin/bash
 
+pyenv global 3.6.6
+
 export ANDROID_NDK=/home/QPY/android-ndk-r17
 export ANDROID_NDK_GFORTRAN=/home/QPY/android-ndk-r13b
 export ANDROID_VER=21
