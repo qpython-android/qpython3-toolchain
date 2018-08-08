@@ -23,6 +23,7 @@ packages = ('openssl', 'ncurses', 'readline', 'bzip2', 'xz', 'zlib', 'sqlite', '
 py_packages = ('libzmq','pyzmq')
 
 skip_build_py  = os.path.exists(".skip_build_py")
+skip_build_py2  = os.path.exists(".skip_build_py2")
 skip_build_py_module  = os.path.exists(".skip_build_py_module")
 
 use_bintray = False

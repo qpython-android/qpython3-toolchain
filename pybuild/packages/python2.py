@@ -1,3 +1,4 @@
+import os
 from .. import env
 from ..source import GitSource
 from ..package import Package
@@ -5,20 +6,13 @@ from ..patch import LocalPatch, RemotePatch
 from ..util import target_arch
 
 
-class Python(Package):
-    source = GitSource('https://github.com/qpython-android/cpython/', branch='qpyc-3.6.6')
+class Python2(Package):
+    source = GitSource('https://github.com/qpython-android/cpython/', branch='qpyc-2.7.15', alias='cpython2')
     patches = [
         # https://bugs.python.org/issue29440
-        RemotePatch('https://bugs.python.org/file46517/gdbm.patch'),
-        LocalPatch('cppflags'),
-        LocalPatch('skip-build'),
-        LocalPatch('py36-0001-Up-configure'),
-        LocalPatch('0001-Build-info'),
-        LocalPatch('py36-pyport-undef-HAVE_LANGINFO_H'),
-        #LocalPatch('py36-0001-Update-compile-flag'),
-        LocalPatch('py36-0001-Remove-readline'),
-        LocalPatch('0001-Update-shell-path-for-android'),
-        RemotePatch('https://github.com/python/cpython/pull/139.patch'),
+        LocalPatch('0001-py27-cross-compile'),
+        LocalPatch('0002-py-cross-compile'),
+        #RemotePatch('https://github.com/python/cpython/pull/139.patch'),
     ]
 
     dependencies = list(env.packages)
@@ -26,13 +20,15 @@ class Python(Package):
     skip_uploading = True
 
     def __init__(self):
-        super(Python, self).__init__()
+        super(Python2, self).__init__()
 
         self.env['CONFIG_SITE'] = self.filesdir / 'config.site'
+        self.env['CFLAGS'] = os.getenv('CLANG_FLAGS_BASE')
 
     def prepare(self):
         self.run(['autoreconf', '--install', '--verbose', '--force'])
 
+        #self.env['CONFIG_SITE'] = self.filesdir / 'config.site'
         self.run_with_env([
             './configure',
             '--prefix=/usr',

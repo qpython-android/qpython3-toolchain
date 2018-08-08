@@ -2,7 +2,7 @@ import os
 import re
 from typing import Iterable
 
-from .env import use_bintray, skip_build_py, skip_build_py_module, py_packages
+from .env import use_bintray, skip_build_py, skip_build_py2, skip_build_py_module, py_packages
 from .package import enumerate_packages, import_package
 
 built_packags: set = set()
@@ -64,6 +64,10 @@ def main():
     print(f'Packages to rebuild: {need_rebuild}')
     if not skip_build_py:
         build_package('python')
+
+    if not skip_build_py2:
+        build_package('python2')
+
 
     if not skip_build_py_module:
         #os.putenv('AS', 'arm-linux-androideabi-as')
