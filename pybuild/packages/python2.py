@@ -10,8 +10,12 @@ class Python2(Package):
     source = GitSource('https://github.com/qpython-android/cpython/', branch='qpyc-2.7.15', alias='cpython2')
     patches = [
         # https://bugs.python.org/issue29440
-        LocalPatch('0001-py27-cross-compile'),
-        LocalPatch('0002-py-cross-compile'),
+        LocalPatch('0001-py-cross-compile1'),
+        LocalPatch('0002-py-cross-compile2'),
+        #LocalPatch('0001-py-fix-android-path'),
+        LocalPatch('0002-Update-build-info'),
+        LocalPatch('0003-fix-readline-issues'),
+        LocalPatch('0001-disabled-readline'),
         #RemotePatch('https://github.com/python/cpython/pull/139.patch'),
     ]
 
@@ -24,6 +28,11 @@ class Python2(Package):
 
         self.env['CONFIG_SITE'] = self.filesdir / 'config.site'
         self.env['CFLAGS'] = os.getenv('CLANG_FLAGS_BASE')
+        self.env['CROSS_COMPILE_TARGET'] = 'yes'
+        self.env['INSTSONAME'] = 'libpython2.7.so' 
+        self.env['_PYTHON_HOST_PLATFORM'] = "linux-x86_64" 
+        self.env['CROSS_COMPILE_TARGET'] = "yes"
+
 
     def prepare(self):
         self.run(['autoreconf', '--install', '--verbose', '--force'])

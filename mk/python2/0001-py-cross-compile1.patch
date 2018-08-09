@@ -6,6 +6,7 @@ Subject: [PATCH 1/2] py27-cross-compile
 ---
  Include/Python.h      |  5 ++++
  Include/pyport.h      |  3 +++
+ Lib/subprocess.py     |  2 +-
  Modules/posixmodule.c |  2 +-
  configure.ac          | 73 ++++++++++++++++++++++++++++++++++++++-------------
  4 files changed, 64 insertions(+), 19 deletions(-)
@@ -40,6 +41,19 @@ index 0c78a1e..bf98141 100644
  #endif
  
  #if LONG_BIT != 8 * SIZEOF_LONG
+diff --git a/Lib/subprocess.py b/Lib/subprocess.py
+index 1f2da0f..7a74b42 100644
+--- a/Lib/subprocess.py
++++ b/Lib/subprocess.py
+@@ -911,7 +911,7 @@ class Popen(object):
+                 args = list(args)
+ 
+             if shell:
+-                args = ["/bin/sh", "-c"] + args
++                args = ["/system/bin/sh", "-c"] + args
+                 if executable:
+                     args[0] = executable
+ 
 diff --git a/Modules/posixmodule.c b/Modules/posixmodule.c
 index 2baf920..d7831f5 100644
 --- a/Modules/posixmodule.c
