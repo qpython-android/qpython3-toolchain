@@ -1,0 +1,25 @@
+From 7e50bbfdb63aba7441c5e865fc53623c4e997fbc Mon Sep 17 00:00:00 2001
+From: river <riverfor@gmail.com>
+Date: Thu, 9 Aug 2018 03:00:50 -0400
+Subject: [PATCH] fix-gethostbyaddr
+
+---
+ Modules/socketmodule.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/Modules/socketmodule.c b/Modules/socketmodule.c
+index 8d36705..6b09d3e 100644
+--- a/Modules/socketmodule.c
++++ b/Modules/socketmodule.c
+@@ -156,6 +156,8 @@ shutdown(how) -- shut down traffic in one or both directions\n\
+    On the other hand, not all Linux versions agree, so there the settings
+    computed by the configure script are needed! */
+ 
++#undef HAVE_GETHOSTBYNAME_R
++
+ #ifndef linux
+ # undef HAVE_GETHOSTBYNAME_R_3_ARG
+ # undef HAVE_GETHOSTBYNAME_R_5_ARG
+-- 
+2.7.4
+

@@ -62,7 +62,7 @@ cp $ASSRC/bin/* $DST/bin
 touch $DST/lib/python2.7/config-2.7/Makefile
 touch $DST/include/python2.7/pyconfig.h
 cp ${PYSRC}/usr/lib/python2.7/lib-dynload/* $DST/lib/python2.7/lib-dynload
-cd ${PYSRC}/usr/lib/python2.7 &&  zip -r $DST/lib/python27.zip * --exclude lib-dynload
+cd ${PYSRC}/usr/lib/python2.7 &&  zip -x "config/libpython2.7.a" -x "lib-dynload/*" -x "lib-tk/*" -r $DST/lib/python27.zip * 
 
 # Copy python packages (numpy)
 cp ${OPENBLAS_SO} $DST/lib
