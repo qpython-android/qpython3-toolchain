@@ -21,10 +21,12 @@ packages = ('openssl', 'ncurses', 'readline', 'bzip2', 'xz', 'zlib', 'sqlite', '
 # 3rd Python modules.
 #py_packages = ('openblas','numpy','scipy')
 py_packages = ('libzmq','pyzmq')
+py_packages2 = ('numpy2',)
 
 skip_build_py  = os.path.exists(".skip_build_py")
 skip_build_py2  = os.path.exists(".skip_build_py2")
 skip_build_py_module  = os.path.exists(".skip_build_py_module")
+skip_build_py2_module  = os.path.exists(".skip_build_py2_module")
 
 use_bintray = False
 bintray_username = 'qpython-android'

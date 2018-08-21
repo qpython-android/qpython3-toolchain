@@ -6,6 +6,8 @@ export ANDROID_NDK=/home/QPY/android-ndk-r17
 export ANDROID_NDK_GFORTRAN=/home/QPY/android-ndk-r13b
 export ANDROID_VER=21
 export TARGET_ARCH_QPY=armeabi-v7a
+export PY_BRANCH="2" # or 3
+export PY_M_BRANCH="7" # or 6m
 
 # Set path to ndk-bundle
 HST=`uname`

@@ -2,7 +2,7 @@ import os
 import re
 from typing import Iterable
 
-from .env import use_bintray, skip_build_py, skip_build_py2, skip_build_py_module, py_packages
+from .env import use_bintray, skip_build_py, skip_build_py2, skip_build_py_module, skip_build_py2_module, py_packages, py_packages2
 from .package import enumerate_packages, import_package
 
 built_packags: set = set()
@@ -76,4 +76,14 @@ def main():
         #CC = "%s %s %s" % ("arm-linux-androideabi-gcc", os.getenv('CC_FLAGS_QPY'), os.getenv('LDFLAGS'))
         #os.putenv('CC', CC)
         for item in py_packages:
+            build_package(item)
+
+
+    if not skip_build_py2_module:
+        #os.putenv('AS', 'arm-linux-androideabi-as')
+        #os.putenv('LD', 'arm-linux-androideabi-ld')
+        #os.putenv('LDSHARED', 'arm-linux-androideabi-ld')
+        #CC = "%s %s %s" % ("arm-linux-androideabi-gcc", os.getenv('CC_FLAGS_QPY'), os.getenv('LDFLAGS'))
+        #os.putenv('CC', CC)
+        for item in py_packages2:
             build_package(item)

@@ -46,6 +46,7 @@ class Python2(Package):
             '--host=' + target_arch().ANDROID_TARGET,
             # CPython requires explicit --build
             '--build=x86_64-linux-gnu',
+            '--enable-unicode=ucs4',
             '--disable-ipv6',
             '--with-system-ffi',
             '--with-system-expat',

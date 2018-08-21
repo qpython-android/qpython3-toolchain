@@ -17,9 +17,10 @@ ASSRC=${ROOT}/mk/qpyc2
 mkdir -p $DST
 
 
+PY2_NOPIE=${ROOT}/src/cpython2/python-nopie
 OPENBLAS_SO=${ROOT}/build/target/openblas/usr/lib/libopenblas.so
-NUMPY_LIB=${ROOT}/src/numpy/build/lib.linux-x86_64-2.7/numpy
-NUMPY_SRC=${ROOT}/src/numpy/build/src.linux-x86_64-2.7/numpy
+NUMPY_LIB=${ROOT}/src/numpy2/build/lib.linux-x86_64-2.7/numpy
+NUMPY_SRC=${ROOT}/src/numpy2/build/src.linux-x86_64-2.7/numpy
 SCIPY_LIB=${ROOT}/src/scipy/build/lib.linux-x86_64-2.7/scipy
 SCIPY_SRC=${ROOT}/src/scipy/build/src.linux-x86_64-2.7/scipy
 
@@ -66,6 +67,8 @@ cd ${PYSRC}/usr/lib/python2.7 &&  zip -x "config/libpython2.7.a" -x "lib-dynload
 
 # Copy python packages (numpy)
 cp ${OPENBLAS_SO} $DST/lib
+cp ${PY2_NOPIE} $DST/bin/python
+$STRIP $DST/bin/python
 $STRIP $DST/lib/*.so
 
 cp -r $NUMPY_LIB $DST/lib/python2.7/site-packages/numpy
