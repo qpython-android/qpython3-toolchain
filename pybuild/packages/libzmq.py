@@ -25,3 +25,6 @@ class LibZMQ(Package):
         self.system(
             f'if [ -e {self.destdir()}/lib/libzmq.so ] ; then mv {self.destdir()}/lib/libzmq.so {self.destdir()}/lib/libzmq.so.old; fi'
         )
+
+    def fresh(self):
+        return True
