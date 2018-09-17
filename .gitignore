@@ -3,3 +3,7 @@
 !/src/.keep
 *.pyc
 .DS_Store
+mk/pygamesdl2/libs
+mk/pygamesdl2/obj
+mk/kivy2/libs
+mk/kivy2/obj

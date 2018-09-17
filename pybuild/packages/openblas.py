@@ -26,3 +26,6 @@ class OpenBLAS(Package):
         self.system(
             f'if [ -e {self.destdir()}/usr/lib/libopenblas.so ] ; then mv {self.destdir()}/usr/lib/libopenblas.so {self.destdir()}/usr/lib/libopenblas.so.old; fi'
         )
+
+    def refresh(self):
+        return True

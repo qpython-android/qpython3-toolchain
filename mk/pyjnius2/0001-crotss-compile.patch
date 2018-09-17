@@ -1,0 +1,38 @@
+From 91732839c69ab7148d8b5d747ba9e01f0908a98e Mon Sep 17 00:00:00 2001
+From: river <riverfor@gmail.com>
+Date: Tue, 4 Sep 2018 05:46:05 -0400
+Subject: [PATCH] cross-compile
+
+---
+ setup.py | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/setup.py b/setup.py
+index cc974b7..bc378aa 100644
+--- a/setup.py
++++ b/setup.py
+@@ -44,9 +44,9 @@ install_requires = ['six>=1.7.0']
+ 
+ # detect Python for android
+ platform = sys.platform
+-ndkplatform = getenv('NDKPLATFORM')
+-if ndkplatform is not None and getenv('LIBLINK'):
+-    platform = 'android'
++#ndkplatform = getenv('NDKPLATFORM')
++#if ndkplatform is not None and getenv('LIBLINK'):
++platform = 'android'
+ 
+ # detect cython
+ try:
+@@ -67,7 +67,7 @@ except ImportError:
+ if platform == 'android':
+     # for android, we use SDL...
+     libraries = ['sdl', 'log']
+-    library_dirs = ['libs/' + getenv('ARCH')]
++    #library_dirs = ['libs/' + getenv('ARCH')]
+ elif platform == 'darwin':
+     import subprocess
+     framework = subprocess.Popen(
+-- 
+2.7.4
+
