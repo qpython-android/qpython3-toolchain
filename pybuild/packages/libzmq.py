@@ -7,7 +7,6 @@ class LibZMQ(Package):
     source = GitSource('https://github.com/AIPYX/zeromq3-x.git', alias='libzmq', branch='qpyc/3.2.5')
     patches = [
         LocalPatch('0001-Fix-libtoolize-s-issue-in-autogen.sh'),
-        #LocalPatch('0001-Disable-stderr-in-blas_server'),
     ]
 
     skip_uploading = True
