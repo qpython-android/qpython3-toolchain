@@ -21,7 +21,7 @@ packages = ('openssl', 'ncurses', 'readline', 'bzip2', 'xz', 'zlib', 'sqlite', '
 # 3rd Python modules.
 #py_packages = ('openblas','numpy','scipy')
 py_packages = ('libzmq','pyzmq')
-py_packages2 = ('opencv2',) #'libzmq','pyzmq2', 'numpy2','scipy2','pandas2','matplotlib2','kiwisolver2','theano2'
+py_packages2 = ('lxml2',) #'libzmq','pyzmq2', 'numpy2','scipy2','pandas2','matplotlib2','kiwisolver2','theano2','pillow2'
 #'pyjnius2','android2','pygamesdl2','kivy2'
 
 skip_build_py  = os.path.exists(".skip_build_py")
