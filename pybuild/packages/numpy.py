@@ -24,8 +24,8 @@ class NumPy(Package):
             'python',
             'setup.py',
             'build_ext',
-            f'-I../../build/target/python{PY_BRANCH}/usr/include/python{PY_BRANCH}.{PY_M_BRANCH}:../../build/target/openblas/usr/include',
-            f'-L../../build/target/python{PY_BRANCH}/usr/lib:../../build/target/openblas/usr/lib',
+            f'-I../../build/target/python/usr/include/python{PY_BRANCH}.{PY_M_BRANCH}:../../build/target/openblas/usr/include',
+            f'-L../../build/target/python/usr/lib:../../build/target/openblas/usr/lib',
             f'-lpython{PY_BRANCH}.{PY_M_BRANCH},m',
         ])
         self.run([
