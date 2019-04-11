@@ -1,0 +1,25 @@
+From 7b53389c0ca65f6e764ac575b53a51efcb26e31f Mon Sep 17 00:00:00 2001
+From: river <riverfor@gmail.com>
+Date: Tue, 24 Jul 2018 06:51:02 -0400
+Subject: [PATCH] Update shell path for android
+
+---
+ Lib/subprocess.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Lib/subprocess.py b/Lib/subprocess.py
+index 290ae44..fbfdca1 100644
+--- a/Lib/subprocess.py
++++ b/Lib/subprocess.py
+@@ -1220,7 +1220,7 @@ class Popen(object):
+                 args = list(args)
+ 
+             if shell:
+-                args = ["/bin/sh", "-c"] + args
++                args = ["/system/bin/sh", "-c"] + args
+                 if executable:
+                     args[0] = executable
+ 
+-- 
+2.7.4
+

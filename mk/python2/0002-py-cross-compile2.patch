@@ -1,0 +1,27 @@
+From 7849d99eaa788666fe289e1fa44757422e9b1a74 Mon Sep 17 00:00:00 2001
+From: river <riverfor@gmail.com>
+Date: Tue, 7 Aug 2018 05:52:42 -0400
+Subject: [PATCH 2/2] py-cross-compile
+
+---
+ Modules/_ctypes/libffi/src/closures.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/Modules/_ctypes/libffi/src/closures.c b/Modules/_ctypes/libffi/src/closures.c
+index c7863f3..6b9ee92 100644
+--- a/Modules/_ctypes/libffi/src/closures.c
++++ b/Modules/_ctypes/libffi/src/closures.c
+@@ -30,6 +30,10 @@
+ #define _GNU_SOURCE 1
+ #endif
+ 
++#ifdef __LP64__
++#undef __LP64__
++#endif
++
+ #include <ffi.h>
+ #include <ffi_common.h>
+ 
+-- 
+2.7.4
+

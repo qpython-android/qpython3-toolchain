@@ -4,7 +4,7 @@ from ..util import target_arch
 
 
 class LibFFI(Package):
-    source = GitSource('https://github.com/libffi/libffi')
+    source = GitSource('https://github.com/qpython3/libffi', branch='qpyc-3.2.1')
 
     def prepare(self):
         self.run(['./autogen.sh'])

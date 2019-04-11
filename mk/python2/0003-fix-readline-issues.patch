@@ -1,0 +1,42 @@
+From 33930d23f7c5b83fb91899ea544597222130996a Mon Sep 17 00:00:00 2001
+From: river <riverfor@gmail.com>
+Date: Wed, 8 Aug 2018 21:43:03 -0400
+Subject: [PATCH 3/3] fix-readline-issues
+
+---
+ Modules/readline.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/Modules/readline.c b/Modules/readline.c
+index 1e10dd7..089e17a 100644
+--- a/Modules/readline.c
++++ b/Modules/readline.c
+@@ -21,7 +21,7 @@
+ #endif
+ 
+ #ifdef SAVE_LOCALE
+-#  define RESTORE_LOCALE(sl) { setlocale(LC_CTYPE, sl); free(sl); }
++#  define RESTORE_LOCALE(sl) { if (sl) { setlocale(LC_CTYPE, sl); free(sl); } }
+ #else
+ #  define RESTORE_LOCALE(sl)
+ #endif
+@@ -905,9 +905,13 @@ static void
+ setup_readline(void)
+ {
+ #ifdef SAVE_LOCALE
+-    char *saved_locale = strdup(setlocale(LC_CTYPE, NULL));
+-    if (!saved_locale)
+-        Py_FatalError("not enough memory to save locale");
++    char *saved_locale = setlocale(LC_CTYPE, NULL);
++    if (saved_locale != NULL) {
++        saved_locale = strdup(saved_locale);
++        if (!saved_locale)
++            Py_FatalError("not enough memory to save locale");
++        setlocale(LC_CTYPE, "");
++    }
+ #endif
+ 
+ #ifdef __APPLE__
+-- 
+2.7.4
+

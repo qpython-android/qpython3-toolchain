@@ -1,0 +1,114 @@
+From 4134df821c69c1ebe13ab4bcb1d2a1f3cddbdd18 Mon Sep 17 00:00:00 2001
+From: river <riverfor@gmail.com>
+Date: Sat, 11 Aug 2018 04:18:05 -0400
+Subject: [PATCH] python lib for qpy
+
+---
+ Lib/distutils/command/build_scripts.py   |  5 ++++-
+ Lib/distutils/command/install_scripts.py |  5 ++++-
+ Lib/distutils/file_util.py               |  7 +++++--
+ Lib/shutil.py                            | 10 ++++++++--
+ Lib/subprocess.py                        |  2 +-
+ 5 files changed, 22 insertions(+), 7 deletions(-)
+
+diff --git a/Lib/distutils/command/build_scripts.py b/Lib/distutils/command/build_scripts.py
+index 567df65..2b5705a 100644
+--- a/Lib/distutils/command/build_scripts.py
++++ b/Lib/distutils/command/build_scripts.py
+@@ -124,7 +124,10 @@ class build_scripts (Command):
+                     if newmode != oldmode:
+                         log.info("changing mode of %s from %o to %o",
+                                  file, oldmode, newmode)
+-                        os.chmod(file, newmode)
++                        try:
++                            os.chmod(file, newmode)
++                        except OSError:
++                            pass
+ 
+     # copy_scripts ()
+ 
+diff --git a/Lib/distutils/command/install_scripts.py b/Lib/distutils/command/install_scripts.py
+index 29cd9e7..f842309 100644
+--- a/Lib/distutils/command/install_scripts.py
++++ b/Lib/distutils/command/install_scripts.py
+@@ -53,7 +53,10 @@ class install_scripts (Command):
+                 else:
+                     mode = ((os.stat(file)[ST_MODE]) | 0555) & 07777
+                     log.info("changing mode of %s to %o", file, mode)
+-                    os.chmod(file, mode)
++                    try:
++                        os.chmod(file, mode)
++                    except OSError:
++                        pass
+ 
+     def get_inputs (self):
+         return self.distribution.scripts or []
+diff --git a/Lib/distutils/file_util.py b/Lib/distutils/file_util.py
+index 3b236e1..c061282 100644
+--- a/Lib/distutils/file_util.py
++++ b/Lib/distutils/file_util.py
+@@ -154,7 +154,7 @@ def copy_file(src, dst, preserve_mode=1, preserve_times=1, update=0,
+     # Otherwise (non-Mac, not linking), copy the file contents and
+     # (optionally) copy the times and mode.
+     _copy_file_contents(src, dst)
+-    if preserve_mode or preserve_times:
++    if False: #preserve_mode or preserve_times:
+         st = os.stat(src)
+ 
+         # According to David Ascher <da@ski.org>, utime() should be done
+@@ -162,7 +162,10 @@ def copy_file(src, dst, preserve_mode=1, preserve_times=1, update=0,
+         if preserve_times:
+             os.utime(dst, (st[ST_ATIME], st[ST_MTIME]))
+         if preserve_mode:
+-            os.chmod(dst, S_IMODE(st[ST_MODE]))
++            try:
++                os.chmod(dst, S_IMODE(st[ST_MODE]))
++            except OSError:
++                pass
+ 
+     return (dst, 1)
+ 
+diff --git a/Lib/shutil.py b/Lib/shutil.py
+index 3462f7c..fc8d203 100644
+--- a/Lib/shutil.py
++++ b/Lib/shutil.py
+@@ -102,7 +102,10 @@ def copymode(src, dst):
+     if hasattr(os, 'chmod'):
+         st = os.stat(src)
+         mode = stat.S_IMODE(st.st_mode)
+-        os.chmod(dst, mode)
++        try:
++            os.chmod(dst, mode)
++        except OSError:
++            pass
+ 
+ def copystat(src, dst):
+     """Copy all stat info (mode bits, atime, mtime, flags) from src to dst"""
+@@ -111,7 +114,10 @@ def copystat(src, dst):
+     if hasattr(os, 'utime'):
+         os.utime(dst, (st.st_atime, st.st_mtime))
+     if hasattr(os, 'chmod'):
+-        os.chmod(dst, mode)
++        try:
++            os.chmod(dst, mode)
++        except OSError:
++            pass
+     if hasattr(os, 'chflags') and hasattr(st, 'st_flags'):
+         try:
+             os.chflags(dst, st.st_flags)
+diff --git a/Lib/subprocess.py b/Lib/subprocess.py
+index 1f2da0f..7a74b42 100644
+--- a/Lib/subprocess.py
++++ b/Lib/subprocess.py
+@@ -911,7 +911,7 @@ class Popen(object):
+                 args = list(args)
+ 
+             if shell:
+-                args = ["/bin/sh", "-c"] + args
++                args = ["/system/bin/sh", "-c"] + args
+                 if executable:
+                     args[0] = executable
+ 
+-- 
+2.7.4
+

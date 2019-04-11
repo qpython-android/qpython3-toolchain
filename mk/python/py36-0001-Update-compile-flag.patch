@@ -17,7 +17,7 @@ index 5f941a26e1..b12420cf59 100644
  #define GITVERSION ""
 +#else
 +#undef GITVERSION
-+#define GITVERSION "3.6.4"
++#define GITVERSION "3.6.6"
  #endif
  #ifndef GITTAG
  #define GITTAG ""

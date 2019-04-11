@@ -1,0 +1,37 @@
+From 2b9d0b79bfd0fc5df80082c8df9aa44e82dc38c7 Mon Sep 17 00:00:00 2001
+From: river <riverfor@gmail.com>
+Date: Fri, 20 Jul 2018 00:59:32 -0400
+Subject: [PATCH] Disable stderr in blas_server
+
+---
+ driver/others/blas_server.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/driver/others/blas_server.c b/driver/others/blas_server.c
+index 9debe17..1f27144 100644
+--- a/driver/others/blas_server.c
++++ b/driver/others/blas_server.c
+@@ -527,7 +527,7 @@ static int blas_monitor(void *arg){
+ 	break;
+       }
+ 
+-      fprintf(stderr, "Total number of suspended ... %ld\n", num_suspend);
++      //fprintf(stderr, "Total number of suspended ... %ld\n", num_suspend);
+     }
+     sleep(1);
+   }
+@@ -793,9 +793,9 @@ int exec_blas(BLASLONG num, blas_queue_t *queue){
+ #ifdef __ELF__
+   if (omp_in_parallel && (num > 1)) {
+     if (omp_in_parallel() > 0) {
+-      fprintf(stderr,
++      /*fprintf(stderr,
+ 	      "OpenBLAS Warning : Detect OpenMP Loop and this application may hang. "
+-	      "Please rebuild the library with USE_OPENMP=1 option.\n");
++	      "Please rebuild the library with USE_OPENMP=1 option.\n");*/
+     }
+   }
+ #endif
+-- 
+2.7.4
+

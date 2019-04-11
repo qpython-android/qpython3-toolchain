@@ -2,3 +2,13 @@
 /src/*
 !/src/.keep
 *.pyc
+.DS_Store
+mk/pygamesdl2/libs
+mk/pygamesdl2/obj
+mk/kivy2/libs
+mk/kivy2/obj
+.skip_build_py2
+.skip_build_py
+.skip_build_py2_module
+.skip_build_py_module
+openblas.note

@@ -10,7 +10,7 @@ from . import env
 from .arch import arm
 from .patch import Patch, RemotePatch
 from .source import Source, GitSource, URLSource
-from .util import BASE, run_in_dir, target_arch
+from .util import BASE, run_in_dir, target_arch, system
 
 
 class Package:
@@ -56,8 +56,13 @@ class Package:
 
     def init_build_env(self):
         self.env = {}
+        self.env['CLANG_FLAGS_QPY']=os.getenv('CLANG_FLAGS_QPY','')
+        self.env['CC_FLAGS_QPY']=os.getenv('CC_FLAGS_QPY','')
 
         ANDROID_NDK = self._check_ndk()
+
+        self.env['ANDROID_NDK'] = ANDROID_NDK
+        self.env['ANDROID_NDK_GFORTRAN'] = os.getenv('ANDROID_NDK_GFORTRAN')
 
         HOST_OS = os.uname().sysname.lower()
 
@@ -70,6 +75,7 @@ class Package:
         CLANG_PREFIX = (ANDROID_NDK / 'toolchains' /
                         'llvm' / 'prebuilt' / f'{HOST_OS}-x86_64')
 
+
         LLVM_BASE_FLAGS = [
             '-target', target_arch().LLVM_TARGET,
             '-gcc-toolchain', self.TOOL_PREFIX,
@@ -77,17 +83,20 @@ class Package:
 
         ARCH_SYSROOT = (ANDROID_NDK / 'platforms' /
                         f'android-{env.android_api_level}' /
-                        f'arch-{self.arch}' / 'usr')
+                        f'arch-{self.arch}' / 'usr' )
+
         UNIFIED_SYSROOT = ANDROID_NDK / 'sysroot' / 'usr'
 
-        cflags = ['-fPIC']
+        cflags = ['-fPIC', '-I'+str(ANDROID_NDK)+"/sysroot/usr/include", '-I'+str(ANDROID_NDK)+"/sysroot/usr/include/arm-linux-androideabi"]
+
         if isinstance(target_arch(), arm) and not self.use_gcc: #use_gcc instead of clang
-            cflags += ['-fno-integrated-as']
+            cflags += ['-fno-integrated-as', '-v', '-femulated-tls']
 
         self.env.update({
             'ANDROID_API_LEVEL': env.android_api_level,
 
             # Sysroots
+            'ANDROID_NDK': ANDROID_NDK,
             'ARCH_SYSROOT': ARCH_SYSROOT,
             'UNIFIED_SYSROOT': UNIFIED_SYSROOT,
 
@@ -96,19 +105,20 @@ class Package:
             'CXX': f'{CLANG_PREFIX}/bin/clang++',
             'CPP': f'{CLANG_PREFIX}/bin/clang -E',
 
-            # Compiler flags
             'CPPFLAGS': LLVM_BASE_FLAGS + [
                 f'--sysroot={ARCH_SYSROOT}',
                 '-isystem', f'{UNIFIED_SYSROOT}/include',
                 '-isystem', f'{UNIFIED_SYSROOT}/include/{target_arch().ANDROID_TARGET}',
                 f'-D__ANDROID_API__={env.android_api_level}',
-                '-D__ANDROID__'
+                '-D__ANDROID__=21'
             ],
             'CFLAGS': cflags,
             'CXXFLAGS': cflags,
             'LDFLAGS': LLVM_BASE_FLAGS + [
                 '--sysroot=' + str(ARCH_SYSROOT),
                 '-pie',
+                '-lc',
+                '-lm',
             ],
         })
 
@@ -138,14 +148,18 @@ class Package:
     def run_with_env(self, cmd: List[str]) -> None:
         self.source.run_in_source_dir(cmd, env=self.env)
 
+    #def run_with_env_ldflags2(self, cmd: List[str]) -> None:
+    #    self.env['LDFLAGS'] = self.env['LDFLAGS2']
+    #    self.source.run_in_source_dir(cmd, env=self.env)
+
     def _check_ndk(self) -> pathlib.Path:
         ndk_path = os.getenv('ANDROID_NDK')
         if not ndk_path:
             raise Exception('Requires environment variable $ANDROID_NDK')
         ndk = pathlib.Path(ndk_path)
 
-        if not (ndk / 'sysroot').exists():
-            raise Exception('Requires Android NDK r14 beta1 or above')
+        #if not (ndk / 'sysroot').exists():
+        #    raise Exception('Requires Android NDK r14 beta1 or above')
 
         return ndk
 
@@ -154,6 +168,10 @@ class Package:
 
     def build(self):
         raise NotImplementedError
+
+    def system(self, cmd: str) -> None:
+        cmd = "cd %s && %s" % (self.source.source_dir, cmd)
+        return system(cmd)
 
     def create_tarball(self):
         print(f'Creating {self.tarball_name} in {self.DIST_PATH}...')

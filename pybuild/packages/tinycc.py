@@ -17,12 +17,12 @@ class TinyCC(Package):
     def prepare(self):
         self.run_with_env([
             './configure',
-            '--prefix=/data/data/org.qpython.qpy.community/files',
+            '--prefix=/data/data/org.qpython.qpy/files',
             f'--sysroot={self.env["ARCH_SYSROOT"]}',
-            f'--cc={self.TOOL_PREFIX}/bin/arm-linux-androideabi-gcc',
-            f'--ar={self.TOOL_PREFIX}/bin/arm-linux-androideabi-ar',
-            f'--extra-cflags=-I{self.env["UNIFIED_SYSROOT"]}/include -I{self.env["UNIFIED_SYSROOT"]}/include/arm-linux-androideabi -D__ANDROID_API__=21 ',
-            f'--extra-ldflags= --sysroot {self.env["ARCH_SYSROOT"]} -L{self.env["ARCH_SYSROOT"]}/lib -L. -D__ANDROID_API__=21 -fPIE -pie '
+            f'--cc={self.env["CC"]}',
+            f'--ar={self.env["AR"]}',
+            f'--extra-cflags=-I{self.env["ARCH_SYSROOT"]}/include -D__ANDROID_API__=21 ',
+            f'--extra-ldflags=--sysroot {self.env["ARCH_SYSROOT"]} -L. -D__ANDROID_API__=21 -fPIE -pie '
             '',
             '--cpu=armv7',
             '--disable-static',

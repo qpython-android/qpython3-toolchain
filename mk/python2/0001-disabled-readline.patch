@@ -1,0 +1,25 @@
+From fdc7d36ad9fd357ae2f179dc4c3e279385e75f54 Mon Sep 17 00:00:00 2001
+From: river <riverfor@gmail.com>
+Date: Wed, 8 Aug 2018 23:08:03 -0400
+Subject: [PATCH] disabled readline
+
+---
+ setup.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/setup.py b/setup.py
+index 33cecc6..0d7a84c 100644
+--- a/setup.py
++++ b/setup.py
+@@ -723,7 +723,7 @@ class PyBuildExt(build_ext):
+             missing.extend(['imageop'])
+ 
+         # readline
+-        do_readline = self.compiler.find_library_file(lib_dirs, 'readline')
++        do_readline = False #self.compiler.find_library_file(lib_dirs, 'readline')
+         readline_termcap_library = ""
+         curses_library = ""
+         # Determine if readline is already linked against curses or tinfo.
+-- 
+2.7.4
+

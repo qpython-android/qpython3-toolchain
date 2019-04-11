@@ -2,7 +2,7 @@ import os
 import re
 from typing import Iterable
 
-from .env import use_bintray
+from .env import use_bintray, skip_build_py, skip_build_py2, skip_build_py_module, skip_build_py2_module, py_packages, py_packages2
 from .package import enumerate_packages, import_package
 
 built_packags: set = set()
@@ -62,4 +62,28 @@ def main():
     # TODO: Make this configurable
     need_rebuild.update(parse_packages(':COMMIT_MARKER'))
     print(f'Packages to rebuild: {need_rebuild}')
-    build_package('python')
+    if not skip_build_py:
+        build_package('python')
+
+    if not skip_build_py2:
+        build_package('python2')
+
+
+    if not skip_build_py_module:
+        #os.putenv('AS', 'arm-linux-androideabi-as')
+        #os.putenv('LD', 'arm-linux-androideabi-ld')
+        #os.putenv('LDSHARED', 'arm-linux-androideabi-ld')
+        #CC = "%s %s %s" % ("arm-linux-androideabi-gcc", os.getenv('CC_FLAGS_QPY'), os.getenv('LDFLAGS'))
+        #os.putenv('CC', CC)
+        for item in py_packages:
+            build_package(item)
+
+
+    if not skip_build_py2_module:
+        #os.putenv('AS', 'arm-linux-androideabi-as')
+        #os.putenv('LD', 'arm-linux-androideabi-ld')
+        #os.putenv('LDSHARED', 'arm-linux-androideabi-ld')
+        #CC = "%s %s %s" % ("arm-linux-androideabi-gcc", os.getenv('CC_FLAGS_QPY'), os.getenv('LDFLAGS'))
+        #os.putenv('CC', CC)
+        for item in py_packages2:
+            build_package(item)

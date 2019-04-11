@@ -1,0 +1,55 @@
+From 3619bcb3275883ae3f13c07b229d80e8f8c2c428 Mon Sep 17 00:00:00 2001
+From: river <riverfor@gmail.com>
+Date: Thu, 19 Jul 2018 09:33:10 -0400
+Subject: [PATCH] Build info
+
+---
+ Modules/getbuildinfo.c | 9 +++++++++
+ Python/getcompiler.c   | 5 +++++
+ 2 files changed, 14 insertions(+)
+
+diff --git a/Modules/getbuildinfo.c b/Modules/getbuildinfo.c
+index 5f941a2..08b018c 100644
+--- a/Modules/getbuildinfo.c
++++ b/Modules/getbuildinfo.c
+@@ -23,12 +23,21 @@
+ /* XXX Only unix build process has been tested */
+ #ifndef GITVERSION
+ #define GITVERSION ""
++#else
++#undef GITVERSION
++#define GITVERSION "3.6.6"
+ #endif
+ #ifndef GITTAG
+ #define GITTAG ""
++#else
++#undef GITTAG
++#define GITTAG "qpyc"
+ #endif
+ #ifndef GITBRANCH
+ #define GITBRANCH ""
++#else
++#undef GITBRANCH
++#define GITBRANCH "qpyc"
+ #endif
+ 
+ const char *
+diff --git a/Python/getcompiler.c b/Python/getcompiler.c
+index 9d9c33a..01e59e4 100644
+--- a/Python/getcompiler.c
++++ b/Python/getcompiler.c
+@@ -21,6 +21,11 @@
+ 
+ #endif /* !COMPILER */
+ 
++#if defined(COMPILER)
++#undef COMPILER
++#define COMPILER "[BUILD WITH QPY3-TOOLCHAIN (https://github.com/qpython-android) ]"
++#endif
++
+ const char *
+ Py_GetCompiler(void)
+ {
+-- 
+2.7.4
+

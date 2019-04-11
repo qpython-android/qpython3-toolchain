@@ -1,0 +1,3 @@
+make PREFIX=../../build/target/openblas/usr ARM_SOFTFP_ABI=1 TARGET=ARMV7 HOSTCC=gcc CC=${ANDROID_NDK_GFORTRAN}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-gcc FC=arm-linux-androideabi-gfortran FFLAGS="--sysroot ${ANDROID_NDK_GFORTRAN}/platforms/android-21/arch-arm" CFLAGS="--sysroot ${ANDROID_NDK_GFORTRAN}/platforms/android-21/arch-arm -I${ANDROID_NDK_GFORTRAN}/platforms/android-21/arch-arm/usr/include" LDFLAGS="-L${ANDROID_NDK_GFORTRAN}/platforms/android-21/arch-arm/usr/lib -L${ANDROID_NDK_GFORTRAN}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/arm-linux-androideabi/lib/armv7-a  -static-libgfortran -lgfortran"  NETLIB_LAPACK_DIR=lapack-netlib
+
+make PREFIX=../../build/target/openblas/usr install

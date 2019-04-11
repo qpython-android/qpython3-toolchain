@@ -1,0 +1,69 @@
+From b2ac7b6cfb8f215b193359cffb5671b73db6b405 Mon Sep 17 00:00:00 2001
+From: river <riverfor@gmail.com>
+Date: Mon, 23 Jul 2018 11:34:54 -0400
+Subject: [PATCH] cross compile
+
+---
+ Makefile.system |  6 +++---
+ common.h        | 10 ++++++++++
+ 2 files changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/Makefile.system b/Makefile.system
+index bd361a1..9c81c5e 100644
+--- a/Makefile.system
++++ b/Makefile.system
+@@ -238,12 +238,12 @@ MD5SUM = md5 -n
+ endif
+ 
+ ifeq ($(OSNAME), Linux)
+-EXTRALIB	+= -lm
++EXTRALIB	+= -lm
+ NO_EXPRECISION = 1
+ endif
+ 
+ ifeq ($(OSNAME), Android)
+-EXTRALIB	+= -lm
++EXTRALIB	+= -lm
+ endif
+ 
+ ifeq ($(OSNAME), AIX)
+@@ -498,7 +498,7 @@ endif
+ 
+ ifeq ($(OSNAME), Android)
+ ifeq ($(ARM_SOFTFP_ABI), 1)
+-EXTRALIB	+= -lm
++EXTRALIB	+= -lm
+ else
+ EXTRALIB	+= -Wl,-lm_hard
+ endif
+diff --git a/common.h b/common.h
+index 4463141..f3d9d32 100644
+--- a/common.h
++++ b/common.h
+@@ -39,6 +39,9 @@
+ #ifndef COMMON_H
+ #define COMMON_H
+ 
++#define OS_ANDROID
++
++
+ #ifdef __cplusplus
+ extern "C" {
+ 	/* Assume C declarations for C++ */
+@@ -499,6 +502,13 @@ static void __inline blas_lock(volatile BLASULONG *address){
+ #include "common_param.h"
+ 
+ #ifndef STDERR
++
++//extern FILE __sF[3] __REMOVED_IN(21);
++
++//#define stdin (&__sF[0])
++//#define stdout (&__sF[1])
++//#define stderr (&__sF[2])
++
+ #define STDERR stderr
+ #endif
+ 
+-- 
+2.7.4
+

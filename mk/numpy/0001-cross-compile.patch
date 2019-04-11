@@ -1,0 +1,193 @@
+From 21306078ec23b8f24f7563f053a7c85943a4cb4c Mon Sep 17 00:00:00 2001
+From: river <riverfor@gmail.com>
+Date: Wed, 23 May 2018 05:12:53 -0400
+Subject: [PATCH] cross-compile
+
+---
+ numpy/core/src/multiarray/common.c     | 29 +++++++++++++++++++++++++++++
+ numpy/core/src/multiarray/temp_elide.c |  4 ++--
+ numpy/core/src/private/npy_fpmath.h    |  2 ++
+ numpy/distutils/system_info.py         | 14 ++++++++++----
+ numpy/distutils/unixccompiler.py       |  6 ++++++
+ numpy/linalg/umath_linalg.c.src        |  2 +-
+ 6 files changed, 50 insertions(+), 7 deletions(-)
+
+diff --git a/numpy/core/src/multiarray/common.c b/numpy/core/src/multiarray/common.c
+index 099cc03..27ad7b6 100644
+--- a/numpy/core/src/multiarray/common.c
++++ b/numpy/core/src/multiarray/common.c
+@@ -838,3 +838,32 @@ _may_have_objects(PyArray_Descr *dtype)
+     return (PyDataType_HASFIELDS(base) ||
+             PyDataType_FLAGCHK(base, NPY_ITEM_HASOBJECT) );
+ }
++
++/// C-runtime patch
++//extern "C"
++//{
++    // used deep inside FreeImage
++    void* lfind( const void * key, const void * base, size_t num, size_t width, int (*fncomparison)(const void *, const void * ) )
++    {
++        char* Ptr = (char*)base;
++
++        for ( size_t i = 0; i != num; i++, Ptr+=width )
++        {
++            if ( fncomparison( key, Ptr ) == 0 ) return Ptr;
++        }
++
++        return NULL;
++    }
++
++    // used in libcompress
++    int fseeko64(FILE *stream, off64_t offset, int whence)
++    {
++        return fseek( stream, offset & 0xFFFFFFFF, whence );
++    }
++
++    // used in libcompress
++    off64_t ftello64(FILE *stream)
++    {
++        return ftell( stream );
++    }
++//} // extern C
+diff --git a/numpy/core/src/multiarray/temp_elide.c b/numpy/core/src/multiarray/temp_elide.c
+index e5175f1..3f154e9 100644
+--- a/numpy/core/src/multiarray/temp_elide.c
++++ b/numpy/core/src/multiarray/temp_elide.c
+@@ -84,7 +84,7 @@
+ #define NPY_MIN_ELIDE_BYTES (32)
+ #endif
+ #include <dlfcn.h>
+-#include <execinfo.h>
++//#include <execinfo.h>
+ 
+ /*
+  * linear search pointer in table
+@@ -144,7 +144,7 @@ check_callers(int * cannot)
+         return 0;
+     }
+ 
+-    nptrs = backtrace(buffer, NPY_MAX_STACKSIZE);
++    nptrs = 0; //backtrace(buffer, NPY_MAX_STACKSIZE);
+     if (nptrs == 0) {
+         /* complete failure, disable elision */
+         init = -1;
+diff --git a/numpy/core/src/private/npy_fpmath.h b/numpy/core/src/private/npy_fpmath.h
+index 86b9cf3..6901c87 100644
+--- a/numpy/core/src/private/npy_fpmath.h
++++ b/numpy/core/src/private/npy_fpmath.h
+@@ -7,6 +7,8 @@
+ #include "numpy/npy_cpu.h"
+ #include "numpy/npy_common.h"
+ 
++//#define HAVE_LDOUBLE_IEEE_DOUBLE_LE
++
+ #ifdef NPY_OS_DARWIN
+     /* This hardcoded logic is fragile, but universal builds makes it
+      * difficult to detect arch-specific features */
+diff --git a/numpy/distutils/system_info.py b/numpy/distutils/system_info.py
+index 93a8e6f..7f436db 100644
+--- a/numpy/distutils/system_info.py
++++ b/numpy/distutils/system_info.py
+@@ -698,9 +698,11 @@ class system_info(object):
+                 continue
+ 
+             if d not in ret:
+-                ret.append(d)
++                # Hack for QPython cross compile
++                if (not d.lower().startswith("/us")) and (not d.lower().startswith("/root")):
++                    ret.append(d)
+ 
+-        log.debug('( %s = %s )', key, ':'.join(ret))
++        log.error('( %s = %s )', key, ':'.join(ret))
+         return ret
+ 
+     def get_lib_dirs(self, key='library_dirs'):
+@@ -1553,7 +1555,8 @@ class lapack_opt_info(system_info):
+                                              lapack_mkl_info):
+             # Use the system lapack from Accelerate or vecLib under OSX
+             args = []
+-            link_args = []
++            link_args = ['-lgcc',] #'-lc', '-ldl', '-L'+os.environ['ANDROID_NDK']+'/toolchains/renderscript/prebuilt/'+os.uname().sysname.lower()+'-x86_64/platform/arm'] #, '-lcompiler_rt']
++            """
+             if get_platform()[-4:] == 'i386' or 'intel' in get_platform() or \
+                'x86_64' in get_platform() or \
+                'i386' in platform.platform():
+@@ -1574,6 +1577,7 @@ class lapack_opt_info(system_info):
+                 else:
+                     args.extend(['-faltivec'])
+                 link_args.extend(['-Wl,-framework', '-Wl,vecLib'])
++            """
+             if args:
+                 self.set_info(extra_compile_args=args,
+                               extra_link_args=link_args,
+@@ -1659,7 +1663,8 @@ class blas_opt_info(system_info):
+                                              blas_mkl_info or blis_info):
+             # Use the system BLAS from Accelerate or vecLib under OSX
+             args = []
+-            link_args = []
++            link_args = ['-lgcc',]#'-lc', '-ldl', '-L'+os.environ['ANDROID_NDK']+'/toolchains/renderscript/prebuilt/'+os.uname().sysname.lower()+'-x86_64/platform/arm'] #, '-lcompiler_rt']
++            """
+             if get_platform()[-4:] == 'i386' or 'intel' in get_platform() or \
+                'x86_64' in get_platform() or \
+                'i386' in platform.platform():
+@@ -1684,6 +1689,7 @@ class blas_opt_info(system_info):
+                 args.extend([
+                     '-I/System/Library/Frameworks/vecLib.framework/Headers'])
+                 link_args.extend(['-Wl,-framework', '-Wl,vecLib'])
++            """
+             if args:
+                 self.set_info(extra_compile_args=args,
+                               extra_link_args=link_args,
+diff --git a/numpy/distutils/unixccompiler.py b/numpy/distutils/unixccompiler.py
+index 6ed5eec..418cf17 100644
+--- a/numpy/distutils/unixccompiler.py
++++ b/numpy/distutils/unixccompiler.py
+@@ -44,6 +44,8 @@ def UnixCCompiler__compile(self, obj, src, ext, cc_args, extra_postargs, pp_opts
+         if opt not in llink_s:
+             self.linker_so = llink_s.split() + opt.split()
+ 
++    #self.compiler_so[0] = 'arm-linux-androideabi-gcc'
++    #self.linker_so[0] = 'arm-linux-androideabi-gcc'
+     display = '%s: %s' % (os.path.basename(self.compiler_so[0]), src)
+ 
+     # gcc style automatic dependencies, outputs a makefile (-MF) that lists
+@@ -107,12 +109,15 @@ def UnixCCompiler_create_static_lib(self, objects, output_libname,
+             pass
+         self.mkpath(os.path.dirname(output_filename))
+         tmp_objects = objects + self.objects
++        from os import environ
++        self.archiver[0] = 'arm-linux-androideabi-ar'
+         while tmp_objects:
+             objects = tmp_objects[:50]
+             tmp_objects = tmp_objects[50:]
+             display = '%s: adding %d object files to %s' % (
+                            os.path.basename(self.archiver[0]),
+                            len(objects), output_filename)
++            #log.error(self.archiver)
+             self.spawn(self.archiver + [output_filename] + objects,
+                        display = display)
+ 
+@@ -122,6 +127,7 @@ def UnixCCompiler_create_static_lib(self, objects, output_libname,
+         # needed -- or maybe Python's configure script took care of
+         # it for us, hence the check for leading colon.
+         if self.ranlib:
++            self.ranlib[0] = 'arm-linux-androideabi-ranlib'
+             display = '%s:@ %s' % (os.path.basename(self.ranlib[0]),
+                                    output_filename)
+             try:
+diff --git a/numpy/linalg/umath_linalg.c.src b/numpy/linalg/umath_linalg.c.src
+index 36b99b5..3d4797f 100644
+--- a/numpy/linalg/umath_linalg.c.src
++++ b/numpy/linalg/umath_linalg.c.src
+@@ -41,7 +41,7 @@ static const char* umath_linalg_version_string = "0.1.5";
+     } while (0)
+ 
+ #if 0
+-#include <execinfo.h>
++//#include <execinfo.h>
+ void
+ dbg_stack_trace()
+ {
+-- 
+2.7.4
+
