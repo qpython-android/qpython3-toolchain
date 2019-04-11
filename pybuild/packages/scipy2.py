@@ -18,6 +18,8 @@ class SciPy2(Package):
         import os,sys
         PY_BRANCH = os.getenv('PY_BRANCH')
         PY_M_BRANCH = os.getenv('PY_M_BRANCH')
+        LD_FLAG=f'-shared -DANDROID --sysroot {self.env["ANDROID_NDK"]}/platforms/android-21/arch-arm -L{self.env["ANDROID_NDK_GFORTRAN"]}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/arm-linux-androideabi/lib/armv7-a -L../../build/target/python2/usr/lib -L../../build/target/openblas/usr/lib -L../numpy2/build/temp.linux-x86_64-2.7'
+
         PY_FLAG=f'-I../../build/target/python2/usr/include/python2.7'\
         ':../../build/target/openblas/usr/include'\
         f':{self.env["ANDROID_NDK"]}/sources/cxx-stl/gnu-libstdc++/4.9/include'\
@@ -31,10 +33,10 @@ class SciPy2(Package):
         '-lopenblas,python2.7,gcc,m,gnustl_static,atomic'
 
         self.system( 
-            f'LDFLAGS=\" -shared -DANDROID --sysroot {self.env["ANDROID_NDK"]}/platforms/android-21/arch-arm -L{self.env["ANDROID_NDK_GFORTRAN"]}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/arm-linux-androideabi/lib/armv7-a -L../../build/target/python2/usr/lib -L../../build/target/openblas/usr/lib -L../numpy2/build/temp.linux-x86_64-2.7 \" python2 setup.py build_ext {PY_FLAG}' 
+            f'LDFLAGS=\" {LD_FLAG} \" python2 setup.py build_ext {PY_FLAG}' 
         )
         self.system( 
-            f'LDFLAGS=\" -shared -DANDROID --sysroot {self.env["ANDROID_NDK"]}/platforms/android-21/arch-arm -L{self.env["ANDROID_NDK_GFORTRAN"]}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/arm-linux-androideabi/lib/armv7-a -L../../build/target/python2/usr/lib -L../../build/target/openblas/usr/lib\ -L../numpy2/build/temp.linux-x86_64-2.7" python2 setup.py build_clib {PY_FLAG}' 
+            f'LDFLAGS=\" {LD_FLAG} \" python2 setup.py build_clib {PY_FLAG}' 
         )
 
         self.run([

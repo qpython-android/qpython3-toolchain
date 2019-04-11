@@ -26,6 +26,9 @@ class Libxslt(Package):
         self.system(
             f'if [ -e {self.destdir()}/lib/libxslt.so ] ; then mv {self.destdir()}/lib/libxslt.so {self.destdir()}/lib/libxslt.so.old; fi'
         )
+        self.system(
+            f'if [ -e {self.destdir()}/lib/libexslt.so ] ; then mv {self.destdir()}/lib/libexslt.so {self.destdir()}/lib/libxeslt.so.old; fi'
+        )
 
     def fresh(self):
         return True

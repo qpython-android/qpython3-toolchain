@@ -16,8 +16,26 @@ class SciPy(Package):
 
     def build(self):
         import os,sys
+        PY_BRANCH = os.getenv('PY_BRANCH')
+        PY_M_BRANCH = os.getenv('PY_M_BRANCH')
+        LD_FLAG=f'-shared -DANDROID --sysroot {self.env["ANDROID_NDK"]}/platforms/android-21/arch-arm -L{self.env["ANDROID_NDK_GFORTRAN"]}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/arm-linux-androideabi/lib/armv7-a'
+        PY_FLAG=f'-I../../build/target/python/usr/include/python3.6m'\
+        f':../../build/target/openblas/usr/include'\
+        f':{self.env["ANDROID_NDK"]}/sources/cxx-stl/gnu-libstdc++/4.9/include'\
+        f':{self.env["ANDROID_NDK"]}/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a/include '\
+        f'-L../../build/target/python/usr/lib'\
+        f':../../build/target/openblas/usr/lib:'\
+        f'../numpy/build/temp.linux-x86_64-3.6:'\
+        f'{self.env["ANDROID_NDK_GFORTRAN"]}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/arm-linux-androideabi/lib/armv7-a '\
+        f':{self.env["ANDROID_NDK"]}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/lib/gcc/arm-linux-androideabi/4.9.x/armv7-a'\
+        f':{self.env["ANDROID_NDK"]}/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a '\
+        f'-lopenblas,python3.6m,gcc,m,gnustl_static,atomic'
+
         self.system( 
-            f'LDFLAGS=\" -shared -DANDROID --sysroot {self.env["ANDROID_NDK"]}/platforms/android-21/arch-arm -L{self.env["ANDROID_NDK_GFORTRAN"]}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/arm-linux-androideabi/lib/armv7-a\" python setup.py build_ext -I../../build/target/python/usr/include/python3.6m:../../build/target/openblas/usr/include:{self.env["ANDROID_NDK"]}/sources/cxx-stl/gnu-libstdc++/4.9/include:{self.env["ANDROID_NDK"]}/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a/include -L../../build/target/python/usr/lib:../../build/target/openblas/usr/lib:../numpy/build/temp.linux-x86_64-3.6:{self.env["ANDROID_NDK_GFORTRAN"]}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/arm-linux-androideabi/lib/armv7-a -lopenblas,python3.6m,m,gcc,gfortran' 
+            f'LDFLAGS=\" {LD_FLAG} \" python setup.py build_ext {PY_FLAG}' 
+        )
+        self.system( 
+            f'LDFLAGS=\" {LD_FLAG} \" python setup.py build_clib {PY_FLAG}' 
         )
         self.run([
             'python',
