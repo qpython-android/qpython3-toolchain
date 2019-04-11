@@ -1,7 +1,7 @@
-Python 3 Android
+QPython Python core toolchain
 ================
 
-This is an experimental set of build scripts that will cross-compile the specific Python 3 for QPython3.
+This is an experimental set of build scripts that will cross-compile the specific Python Core for QPython / QPython3.
 
 
 Prerequisites
