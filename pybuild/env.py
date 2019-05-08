@@ -19,7 +19,7 @@ android_api_level = os.getenv('ANDROID_VER')
 #  tools - some handy utility scripts from ./devscripts
 packages = ('openssl', 'ncurses', 'readline', 'bzip2', 'xz', 'zlib', 'sqlite', 'gdbm', 'libffi', 'expat', 'tools')
 # 3rd Python modules.
-py_packages = ('openblas', 'numpy', 'scipy', 'pandas')
+py_packages = ('openblas', 'numpy', 'scipy', 'pandas', 'kiwisolver', 'matplotlib', 'theano')
 #py_packages = ('libzmq','pyzmq')
 py_packages2 = ('scikitlearn2',) #'libzmq','pyzmq2', 'numpy2','scipy2','pandas2','matplotlib2','kiwisolver2','theano2','pillow2','dropbear','dulwich2'
 #'pyjnius2','android2','pygamesdl2','kivy2','libxml2','libxslt','lxml2','cryptography2'
