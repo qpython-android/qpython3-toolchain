@@ -24,9 +24,9 @@ class SciPy(Package):
         f':{self.env["ANDROID_NDK"]}/sources/cxx-stl/gnu-libstdc++/4.9/include'\
         f':{self.env["ANDROID_NDK"]}/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a/include '\
         f'-L../../build/target/python/usr/lib'\
-        f':../../build/target/openblas/usr/lib:'\
-        f'../numpy/build/temp.linux-x86_64-3.6:'\
-        f'{self.env["ANDROID_NDK_GFORTRAN"]}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/arm-linux-androideabi/lib/armv7-a '\
+        f':../../build/target/openblas/usr/lib'\
+        f':../numpy/build/temp.linux-x86_64-3.6'\
+        f':{self.env["ANDROID_NDK_GFORTRAN"]}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/arm-linux-androideabi/lib/armv7-a'\
         f':{self.env["ANDROID_NDK"]}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/lib/gcc/arm-linux-androideabi/4.9.x/armv7-a'\
         f':{self.env["ANDROID_NDK"]}/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a '\
         f'-lopenblas,python3.6m,gcc,m,gnustl_static,atomic'
