@@ -1,6 +1,6 @@
 import os
 
-target_arch = 'arm'
+target_arch = 'arm64'
 android_api_level = os.getenv('ANDROID_VER')
 
 # Python optional modules.

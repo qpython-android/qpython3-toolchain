@@ -58,6 +58,7 @@ class Package:
         self.env = {}
         self.env['CLANG_FLAGS_QPY']=os.getenv('CLANG_FLAGS_QPY','')
         self.env['CC_FLAGS_QPY']=os.getenv('CC_FLAGS_QPY','')
+        
 
         ANDROID_NDK = self._check_ndk()
 
@@ -86,8 +87,10 @@ class Package:
                         f'arch-{self.arch}' / 'usr' )
 
         UNIFIED_SYSROOT = ANDROID_NDK / 'sysroot' / 'usr'
+        TARGET_ARCH_ANDROID = os.getenv('TARGET_ARCH_ANDROID')
+        TARGET_ARCH_NAME = os.getenv('TARGET_ARCH_NAME')
 
-        cflags = ['-fPIC', '-I'+str(ANDROID_NDK)+"/sysroot/usr/include", '-I'+str(ANDROID_NDK)+"/sysroot/usr/include/arm-linux-androideabi"]
+        cflags = ['-fPIC', '-I'+str(ANDROID_NDK)+"/sysroot/usr/include", '-I'+str(ANDROID_NDK)+"/sysroot/usr/include/"+TARGET_ARCH_ANDROID+"-linux-"+TARGET_ARCH_NAME]
 
         if isinstance(target_arch(), arm) and not self.use_gcc: #use_gcc instead of clang
             cflags += ['-fno-integrated-as', '-v', '-femulated-tls']
