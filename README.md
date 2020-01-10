@@ -1,6 +1,6 @@
 # About
 
-qpython3-toolchain is a tools collection, helping you build QPython3's core from source code.
+QPython3-toolchain is a tools collection, helping you build QPython3's core from source code.
 
 Documentation is being sorted out.
 
