@@ -5,7 +5,7 @@ from ..package import Package
 
 class BZip2(Package):
     version = '1.0.6'
-    source = URLSource(f'https://nchc.dl.sourceforge.net/project/bzip2/bzip2-{version}.tar.gz')
+    source = URLSource(f'https://download.sourceforge.net/project/bzip2/bzip2-{version}.tar.gz')
     patches = [
         LocalPatch('makefiles'),
     ]
