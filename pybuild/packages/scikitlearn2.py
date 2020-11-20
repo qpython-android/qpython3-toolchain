@@ -24,11 +24,11 @@ class Scikitlearn2(Package):
             'python2',
             'setup.py',
             'build_ext',
-            f'-I{BLD}/python{PY_BRANCH}/usr/include/python{PY_BRANCH}.{PY_M_BRANCH}'\
+            f'-I{BLD}/python/usr/include/python{PY_BRANCH}.{PY_M_BRANCH}'\
             f':{ANDROID_NDK}/sources/cxx-stl/gnu-libstdc++/4.9/include'\
             f':{ANDROID_NDK}/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a/include'\
             f':{BLD}/openblas/usr/include',
-            f'-L{BLD}/python{PY_BRANCH}/usr/lib'\
+            f'-L{BLD}/python/usr/lib'\
             f':{BLD}/openblas/usr/lib'\
             f':{ANDROID_NDK}/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a '\
             f':{ANDROID_NDK}/toolchains/renderscript/prebuilt/linux-x86_64/platform/arm'\
