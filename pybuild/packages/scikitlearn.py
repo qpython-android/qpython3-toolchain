@@ -19,6 +19,7 @@ class Scikitlearn(Package):
         PY_M_BRANCH = os.getenv('PY_M_BRANCH')
         BLD = os.path.join(os.getcwd(),'build/target')
         ANDROID_NDK = os.getenv("ANDROID_NDK")
+        UNIFIED_SYSROOT = os.getenv("UNIFIED_SYSROOT")
 
         self.run([
             'python',
@@ -33,6 +34,7 @@ class Scikitlearn(Package):
             f':{ANDROID_NDK}/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a '\
             f':{ANDROID_NDK}/toolchains/renderscript/prebuilt/linux-x86_64/platform/arm'\
             f':{ANDROID_NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/lib/gcc/arm-linux-androideabi/4.9.x/armv7-a',
+            f':{UNIFIED_SYSROOT}',
             f'-lpython{PY_BRANCH}.{PY_M_BRANCH},m',
         ])
         self.run([
