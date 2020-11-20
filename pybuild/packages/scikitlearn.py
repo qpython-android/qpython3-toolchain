@@ -29,12 +29,12 @@ class Scikitlearn(Package):
             f':{ANDROID_NDK}/sources/cxx-stl/gnu-libstdc++/4.9/include'\
             f':{ANDROID_NDK}/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a/include'\
             f':{BLD}/openblas/usr/include',
+            f':{UNIFIED_SYSROOT}',            
             f'-L{BLD}/python/usr/lib'\
             f':{BLD}/openblas/usr/lib'\
             f':{ANDROID_NDK}/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a '\
             f':{ANDROID_NDK}/toolchains/renderscript/prebuilt/linux-x86_64/platform/arm'\
             f':{ANDROID_NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/lib/gcc/arm-linux-androideabi/4.9.x/armv7-a',
-            f':{UNIFIED_SYSROOT}',
             f'-lpython{PY_BRANCH}.{PY_M_BRANCH},m',
         ])
         self.run([
