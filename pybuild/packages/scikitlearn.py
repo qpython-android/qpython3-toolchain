@@ -19,7 +19,7 @@ class Scikitlearn(Package):
         PY_M_BRANCH = os.getenv('PY_M_BRANCH')
         BLD = os.path.join(os.getcwd(),'build/target')
         ANDROID_NDK = os.getenv("ANDROID_NDK")
-        UNIFIED_SYSROOT = os.getenv("UNIFIED_SYSROOT")
+        UNIFIED_SYSROOT = self.env["UNIFIED_SYSROOT"]
 
         self.run([
             'python',
