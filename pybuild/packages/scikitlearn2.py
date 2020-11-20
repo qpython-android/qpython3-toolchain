@@ -29,7 +29,7 @@ class Scikitlearn2(Package):
             f':{ANDROID_NDK}/sources/cxx-stl/gnu-libstdc++/4.9/include'\
             f':{ANDROID_NDK}/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a/include'\
             f':{BLD}/openblas/usr/include'\
-            f':{UNIFIED_SYSROOT}',
+            f':{UNIFIED_SYSROOT}/include',
             f'-L{BLD}/python/usr/lib'\
             f':{BLD}/openblas/usr/lib'\
             f':{ANDROID_NDK}/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a '\
