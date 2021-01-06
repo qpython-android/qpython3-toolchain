@@ -19,6 +19,7 @@ class Scikitlearn(Package):
         PY_M_BRANCH = os.getenv('PY_M_BRANCH')
         BLD = os.path.join(os.getcwd(),'build/target')
         ANDROID_NDK = os.getenv("ANDROID_NDK")
+        UNIFIED_SYSROOT = self.env["UNIFIED_SYSROOT"]
 
         self.run([
             'python',
@@ -27,7 +28,8 @@ class Scikitlearn(Package):
             f'-I{BLD}/python/usr/include/python{PY_BRANCH}.{PY_M_BRANCH}'\
             f':{ANDROID_NDK}/sources/cxx-stl/gnu-libstdc++/4.9/include'\
             f':{ANDROID_NDK}/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a/include'\
-            f':{BLD}/openblas/usr/include',
+            f':{BLD}/openblas/usr/include'\
+            f':{UNIFIED_SYSROOT}/include',            
             f'-L{BLD}/python/usr/lib'\
             f':{BLD}/openblas/usr/lib'\
             f':{ANDROID_NDK}/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a '\
